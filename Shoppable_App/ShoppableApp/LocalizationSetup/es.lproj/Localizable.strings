@@ -1,0 +1,45 @@
+/* 
+  Localizable.strings
+  ShoppableApp
+
+  Created by Cristina Dobson on 1/19/23.
+  
+*/
+
+//TabBarController
+"Collections" = "Colecciones";
+"Cart" = "Carrito";
+
+//ProductOverviewViewController
+"Couches" = "Sofás";
+"Chairs" = "Sillas";
+
+//ProductCatalogViewController
+"seats" = "asientos";
+
+//ProductPageViewController
+"Add to Shopping Cart" = "Añadir al Carrito";
+"Product" = "Producto";
+
+//CartViewController
+"Shopping Cart" = "Carrito de Compras";
+"Remove Item" = "Remover Artículo";
+
+//Buttons
+"Done" = "Listo";
+"Cancel" = "Cancelar";
+
+//Colors
+"beige" = "beige";
+"gray" = "gris";
+"black" = "negro";
+"multi" = "multicolor";
+"flanell" = "franela";
+"white" = "blanco";
+"dark blue" = "azul oscuro";
+"wood" = "madera";
+
+//Materials
+"wood with cover" = "madera con cubierta";
+"plastic" = "plastico";
+"wood and metal" = "madera y metal";

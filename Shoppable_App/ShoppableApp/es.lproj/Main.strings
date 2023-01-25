@@ -1,0 +1,27 @@
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "BgM-5d-ipj"; */
+"BgM-5d-ipj.title" = "Item";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "P4J-bp-gwn"; */
+"P4J-bp-gwn.text" = "Label";
+
+/* Class = "UILabel"; text = "Total"; ObjectID = "SzZ-YM-dMz"; */
+"SzZ-YM-dMz.text" = "Total";
+
+/* Class = "UILabel"; text = "€69,00"; ObjectID = "TgN-mK-Cno"; */
+"TgN-mK-Cno.text" = "€69,00";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Xmz-3q-hu3"; */
+"Xmz-3q-hu3.text" = "Label";
+
+/* Class = "UIButton"; configuration.title = "Add to Cart"; ObjectID = "ljd-3j-Mz1"; */
+"ljd-3j-Mz1.configuration.title" = "Add to Cart";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "ljd-3j-Mz1"; */
+"ljd-3j-Mz1.normalTitle" = "Button";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "rB9-7K-Tmd"; */
+"rB9-7K-Tmd.title" = "Item";
+
+/* Class = "UILabel"; text = "€0.00"; ObjectID = "rv4-XW-RND"; */
+"rv4-XW-RND.text" = "€0.00";

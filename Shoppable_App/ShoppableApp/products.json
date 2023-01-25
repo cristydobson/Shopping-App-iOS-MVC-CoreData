@@ -1,0 +1,199 @@
+{ "products": 
+	[
+		{
+			"id": "1",
+			"name":  "Henriksdal",
+			"price": {
+				"value": 499,
+				"currency": "kr"
+			}, 
+			"info": {
+				"material": "wood with cover",
+				"color": "white"
+			},
+			"type": "chair",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0462849_PE608354_S4.JPG"
+		},
+		{
+			"id": "2",
+			"name":  "Lidhult",
+			"price": {
+				"value": 1035,
+				"currency": "kr"
+			}, 
+			"info": {
+				"numberOfSeats": 4,
+				"color": "beige"
+			},
+			"type": "couch",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0667779_PE714073_S4.JPG"
+		}, {
+			"id": "3",
+			"name":  "Nyhamn",
+			"price": {
+				"value": 3395,
+				"currency": "kr"
+			}, 
+			"info": {
+				"numberOfSeats": 3,
+				"color": "gray"
+			},
+			"type": "couch",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0556706_PE660542_S4.JPG"
+		},
+		{	
+			"id": "4",
+			"name":  "Landskrona",
+			"price": {
+				"value": 7495,
+				"currency": "kr"
+			}, 
+			"info": {
+				"numberOfSeats": 2,
+				"color": "black"
+			},
+			"type": "couch",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0320948_PE514802_S4.JPG"
+		},
+		{	
+			"id": "5",
+			"name":  "Odger",
+			"price": {
+				"value": 695.20,
+				"currency": "kr"
+			}, 
+			"info": {
+				"material": "plastic",
+				"color": "dark blue"
+			},
+			"type": "chair",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0727322_PE735594_S4.JPG"
+		},
+		{	
+			"id": "6",
+			"name":  "Landskrona",
+			"price": {
+				"value": 14396,
+				"currency": "kr"
+			}, 
+			"info": {
+				"numberOfSeats": 5,
+				"color": "black"
+			},
+			"type": "couch",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0630092_PE694645_S4.JPG"
+		},
+		{	
+			"id": "7",
+			"name":  "Klippan",
+			"price": {
+				"value": 1995,
+				"currency": "kr"
+			}, 
+			"info": {
+				"numberOfSeats": 2,
+				"color": "multi"
+			},
+			"type": "couch",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0655887_PE709150_S4.JPG"
+		},
+		{	
+			"id": "8",
+			"name":  "Kullaberg",
+			"price": {
+				"value": 499,
+				"currency": "kr"
+			}, 
+			"info": {
+				"material": "wood and metal",
+				"color": "black"
+			},
+			"type": "chair",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0724693_PE734575_S4.JPG"
+		},
+		{	
+			"id": "9",
+			"name":  "Stocksund",
+			"price": {
+				"value": 4995,
+				"currency": "kr"
+			}, 
+			"info": {
+				"numberOfSeats": 3,
+				"color": "flanell"
+			},
+			"type": "couch",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0617825_PE688232_S4.JPG"
+		},
+		{	
+			"id": "10",
+			"name":  "IKEA PS 2012",
+			"price": {
+				"value": 495,
+				"currency": "kr"
+			}, 
+			"info": {
+				"material": "wood",
+				"color": "black"
+			},
+			"type": "chair",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0154688_PE312833_S4.JPG"
+		},
+		{	
+			"id": "11",
+			"name":  "Henriksdal",
+			"price": {
+				"value": 1195,
+				"currency": "kr"
+			}, 
+			"info": {
+				"material": "wood with cover",
+				"color": "black"
+			},
+			"type": "chair",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0728320_PE736188_S4.JPG"
+		},
+		{	
+			"id": "12",
+			"name":  "Industriell",
+			"price": {
+				"value": 499,
+				"currency": "kr"
+			}, 
+			"info": {
+				"material": "wood",
+				"color": "wood"
+			},
+			"type": "chair",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0579780_PE669907_S4.JPG"
+		},
+		{	
+			"id": "13",
+			"name":  "Janinge",
+			"price": {
+				"value": 395,
+				"currency": "kr"
+			}, 
+			"info": {
+				"material": "plastic",
+				"color": "white"
+			},
+			"type": "chair",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0728156_PE736116_S4.JPG"
+		},
+		{	
+			"id": "14",
+			"name":  "Ektorp",
+			"price": {
+				"value": 4495,
+				"currency": "kr"
+			}, 
+			"info": {
+				"numberOfSeats": 3,
+				"color": "multi"
+			},
+			"type": "couch",
+			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0619738_PE689282_S4.JPG"
+		}
+	]
+}
