@@ -56,14 +56,14 @@ This app contains:
 * The total price of all the products in the Shopping Cart is always visible to the user at the bottom of the screen.
 
 
-## Other features:
+# Other features:
 
 * The UI adapts to light and dark modes.
 * Language localization setup (Spanish included as a starter).
 * Currency formatter to Locale for Strings.
 
 
-## Sample User Release Note:
+# Sample User Release Note:
 
 * Read the Release_Note.docx file
 
