@@ -13,7 +13,7 @@ This app contains:
 * Assets (App icon, buttons and 1 launchscreen image)
 
 
-##Root Controller -> UITabBarController:
+## Root Controller -> UITabBarController:
 
 * This View Controller has 2 child UINavigationControllers which produce 2 TabBarItems.
 * Delegate for ProductOverviewViewController and CartViewController.
@@ -21,16 +21,16 @@ This app contains:
 * It handles Shopping Cart data storage in UserDefaults.
 
 
-##TabBarItem 1 - View Controller Stack:
+## TabBarItem 1 - View Controller Stack:
 
-#1. Top View Controller -> ProductOverviewViewController:
+# 1. Top View Controller -> ProductOverviewViewController:
 
 * Organizes the products into collections of the same type of product.
 * Displays the collections on a UICollectionView.
 * Delegate for ProductCatalogViewController.
 * Contains a segue to ProductCatalogViewController.
 
-#2. ProductCatalogViewController:
+# 2. ProductCatalogViewController:
 
 * Receives the product list from a user-selected collection type.
 * Displays the list of products on a UICollectionView.
@@ -38,16 +38,16 @@ This app contains:
 * Delegate for ProductPageViewController.
 * Contains a segue to ProductPageViewController.
 
-#3. ProductPageViewController:
+# 3. ProductPageViewController:
 
 * Receives a single user-selected product.
 * Displays the product's information inside a UIScrollView.
 * Can add the product to the Shopping Cart from the Add To Cart button.
 
 
-##TabBarItem 2:
+## TabBarItem 2:
 
-#Top View Controller -> CartViewController:
+# Top View Controller -> CartViewController:
 
 * Sets up an observer to update its Shopping Cart data and UI when ProductCatalogViewController and ProductPageViewController add a new product to the Shopping Cart.
 * Displays the products from the Shopping Cart on a UITableView.
@@ -56,14 +56,14 @@ This app contains:
 * The total price of all the products in the Shopping Cart is always visible to the user at the bottom of the screen.
 
 
-##Other features:
+## Other features:
 
 * The UI adapts to light and dark modes.
 * Language localization setup (Spanish included as a starter).
 * Currency formatter to Locale for Strings.
 
 
-##Sample User Release Note:
+## Sample User Release Note:
 
 * Read the Release_Note.docx file
 
