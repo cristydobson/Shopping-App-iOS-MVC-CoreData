@@ -2,7 +2,7 @@
     TabBarController.swift
     ShoppableApp
 
-    Created by Cristina Dobson on 1/19/23.
+    Created on 1/19/23.
  
     A TabBarController with 2 child Navigation Controllers
 */
@@ -12,7 +12,7 @@ import UIKit
 
 class TabBarController: UITabBarController {
 
-  //MARK: - Properties
+  //MARK: - Properties ******
   
   //UserDefaults
   let itemsInShoppingCartArrayKey = "itemsInShoppingCartArray"
@@ -20,31 +20,30 @@ class TabBarController: UITabBarController {
   //Tab Bar
   var currentTabIndex = 0
   
-  //JSON Loader
-  var jsonLoader: JsonLoader?
+  //Image Loader
+  var imageLoader: ImageDownloader?
   
   //Products 
-  var productCollections: [ProductDictionary] = []
+  var productCollections: [ProductCollection] = []
   
   //ShoppingCart
   var itemsInShoppingCartIDs: [ProductDictionary] = []
   var itemsInShoppingCartCount = 0
-  var shoppingCartInfoClass: ShoppingCartInfo?
-  
-  //Product Information Class
-  var productInfoClass: ProductInformation?
   
   
-  //MARK: - View Controller's Life Cycle
+  //MARK: - View Controller's Life Cycle ******
   override func viewDidLoad() {
     super.viewDidLoad()
     
     //TabBar's Delegate
     delegate = self
     
+    //Image Loader
+    imageLoader = ImageDownloader()
+    
     //Load JSON Data
-    jsonLoader = JsonLoader()
-    let products = jsonLoader!.returnProductCollectionTypeArray(from: "products")
+    let jsonLoader = JsonLoader()
+    let products = jsonLoader.returnProductCollectionTypeArray(from: "products")
     productCollections = products
     
     //Setup the TabBar items title and style
@@ -57,21 +56,15 @@ class TabBarController: UITabBarController {
     tabBar.unselectedItemTintColor = .systemGray3
     
     //Add a custom view to the TabBar
-    let tabBarView = UIView(frame: CGRect(x: -10, y: 0,
-                                          width: tabBar.frame.width+20,
-                                          height: tabBar.frame.height*2))
-    tabBarView.backgroundColor = UIColor.dynamicColor(light: .white, dark: .black)
-    tabBarView.addBorderStyle(
-      borderWidth: 0.5,
-      borderColor: UIColor.dynamicColor(light: .imageBorderGray, dark: .white)
-    )
-    tabBar.insertSubview(tabBarView, at: 0)
-        
-    //Shopping Cart Information class
-    shoppingCartInfoClass = ShoppingCartInfo()
-    
-    //Product Information Class
-    productInfoClass = ProductInformation()
+//    let tabBarView = UIView(frame: CGRect(x: -10, y: 0,
+//                                          width: tabBar.frame.width+20,
+//                                          height: tabBar.frame.height*2))
+//    tabBarView.backgroundColor = UIColor.dynamicColor(light: .white, dark: .black)
+//    tabBarView.addBorderStyle(
+//      borderWidth: 0.5,
+//      borderColor: UIColor.dynamicColor(light: .imageBorderGray, dark: .white)
+//    )
+//    tabBar.insertSubview(tabBarView, at: 0)
     
     //Get itemsInShoppingCart array from UserDefaults if it exists
     if let itemsInShoppingCartArray = UserDefaults.standard.array(forKey: itemsInShoppingCartArrayKey) as? [ProductDictionary] {
@@ -87,7 +80,9 @@ class TabBarController: UITabBarController {
       navController.navigationBar.prefersLargeTitles = true
       rootController.productOverviewViewControllerDelegate = self
       rootController.productCollections = productCollections
-      rootController.itemsInShoppingCartIDs = itemsInShoppingCartIDs
+      rootController.imageLoader = imageLoader
+      rootController.screenTitle = NSLocalizedString("Collections",
+                                                     comment: "ProductOverviewViewController title")
     }
     
     //CartViewController delegate
@@ -98,6 +93,8 @@ class TabBarController: UITabBarController {
       rootController.cartViewControllerDelegate = self
       rootController.itemsInShoppingCartIDs = itemsInShoppingCartIDs
       rootController.productCollections = productCollections
+      rootController.imageLoader = imageLoader
+      rootController.screenTitle = NSLocalizedString("Shopping Cart", comment: "Cart View Controller title")
     }
     
     //Set up the Cart TabBar item badge
@@ -105,6 +102,9 @@ class TabBarController: UITabBarController {
     itemsInShoppingCartCount = itemsInCartCount
     setupCartTabBarItemBadge(with: itemsInCartCount)
   }
+
+   
+  //MARK: Setup Methods
   
   //Get a child NavigationController
   func getChildNavigationController(with index: Int) -> UINavigationController? {
@@ -113,8 +113,7 @@ class TabBarController: UITabBarController {
     }
     return nil
   }
-   
-  //MARK: Setup Methods
+  
   //Get the count of the products in the Shopping Cart
   func getItemsInShoppingCartCount(from array: [ProductDictionary]) -> Int {
     var itemCount = 0
@@ -127,7 +126,7 @@ class TabBarController: UITabBarController {
   }
 }
 
-//MARK: - UITabBarControllerDelegate
+//MARK: - UITabBarControllerDelegate ******
 extension TabBarController: UITabBarControllerDelegate {
   func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
     
@@ -140,16 +139,12 @@ extension TabBarController: UITabBarControllerDelegate {
       
       //Update data in a tapped tabBar View Controller
       switch selectedTabIndex {
-        case let x where x == 0:
-          if let currentController = viewController as? ProductOverviewViewController {
-            currentController.itemsInShoppingCartIDs = itemsInShoppingCartIDs
-          }
-        case let x where x == 1:
+        case 0:
+          print("TAB-01")
+        default:
           if let currentController = viewController as? CartViewController {
             currentController.itemsInShoppingCartIDs = itemsInShoppingCartIDs
           }
-        default:
-          print("Not a TabItem!")
       }
     }
   }
@@ -164,98 +159,97 @@ extension TabBarController: UITabBarControllerDelegate {
    */
   func setupCartTabBarItemBadge(with count: Int) {
     let cartTabItem = tabBar.items?.last
-    if count > 0 {
-      cartTabItem?.badgeValue = "\(count)"
-    }
-    else {
-      cartTabItem?.badgeValue = nil
-    }
+    cartTabItem?.badgeValue = count > 0 ? "\(count)" : nil
   }
 }
 
-//MARK: - ProductOverviewViewControllerDelegate
+//MARK: - ProductOverviewViewControllerDelegate ******
 extension TabBarController: ProductOverviewViewControllerDelegate {
   
   /*
    The user has added new items to the Shopping Cart from
    ProductCatalogViewController or ProductPageViewController
    */
-  func updateCartControllerFromProductCatalogController(with product: ProductDictionary) {
+  func updateCartControllerFromProductCatalogController(with product: Product) {
 
     //Store the IDs of the products in the Shopping Cart in UserDefaults
-    if let productID = product[ProductDataKeys.id.rawValue] as? String {
+
+    let productID = product.id
+    var itemIsInShoppingCart = false
+    
+    /*
+     Loop throught the local variable array itemsInShoppingCartIDs
+     to check if the item is already in the Shopping Cart
+     */
+    for i in 0..<itemsInShoppingCartIDs.count {
       
-      var itemIsInShoppingCart = false
-      
-      /*
-       Loop throught the local variable array itemsInShoppingCartIDs
-       to check if the item is already in the Shopping Cart
-       */
-      for i in 0..<itemsInShoppingCartIDs.count {
-        
-        let item = itemsInShoppingCartIDs[i]
-        if
-          let itemID = item[ProductDataKeys.id.rawValue] as? String,
-          itemID == productID
-        {
-          itemIsInShoppingCart = true
-          
-          /*
-           Update the local variable array itemsInShoppingCartIDs
-            with the new count of the product
-          */
-          if let inShoppingCartCount = item[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int {
-            let updatedCount = inShoppingCartCount + 1
-            itemsInShoppingCartIDs[i].updateValue(
-              updatedCount as AnyObject,
-              forKey: UserDefaultsKeys.inShoppingCartCount.rawValue
-            )
-            
-            UserDefaults.standard.set(
-              itemsInShoppingCartIDs,
-              forKey: itemsInShoppingCartArrayKey
-            )
-          }
-          
-          break
-        }
-      }
-      
-      /*
-       If the product is not in the Shopping Cart already,
-       then append it as a new item to the local array itemsInShoppingCartIDs,
-       and save it to UserDeafults as well
-       */
+      let item = itemsInShoppingCartIDs[i]
       if
-        !itemIsInShoppingCart,
-        let productType = product[ProductDataKeys.type.rawValue] as? String
+        let itemID = item[UserDefaultsKeys.id.rawValue] as? String,
+        itemID == productID
       {
+        itemIsInShoppingCart = true
         
-        let productIdDictionary: ProductDictionary = [
-          UserDefaultsKeys.id.rawValue:productID as AnyObject,
-          UserDefaultsKeys.productCollectionType.rawValue:productType as AnyObject,
-          UserDefaultsKeys.inShoppingCartCount.rawValue:1 as AnyObject
-        ]
-        itemsInShoppingCartIDs.append(productIdDictionary)
+        /*
+         Update the local variable array itemsInShoppingCartIDs
+         with the new count of the product
+         */
+        updateItemCountInShoppingCart(on: i)
         
-        UserDefaults.standard.set(
-          itemsInShoppingCartIDs,
-          forKey: itemsInShoppingCartArrayKey
-        )
+        break
       }
-      
-      //Update the Cart TabBar item's badge
-      itemsInShoppingCartCount += 1
-      setupCartTabBarItemBadge(with: itemsInShoppingCartCount)
     }
     
+    /*
+     If the product is not in the Shopping Cart already,
+     then append it as a new item to the local array itemsInShoppingCartIDs,
+     and save it to UserDeafults as well
+     */
+    if !itemIsInShoppingCart {
+      saveNewItemInShoppingCart(with: productID, type: product.type)
+    }
+    
+    //Update the Cart TabBar item's badge
+    itemsInShoppingCartCount += 1
+    setupCartTabBarItemBadge(with: itemsInShoppingCartCount)
+    
     //Update the total price in Shopping Cart in UserDefaults
-    let price = productInfoClass?.getProductPrice(from: product)
-    shoppingCartInfoClass?.updateTheShoppingCartTotal(with: price!)
+    let price = product.price.value
+    updateTheShoppingCartTotal(with: price)
+
+  }
+  
+  func updateItemCountInShoppingCart(on index: Int) {
+    if let inShoppingCartCount = itemsInShoppingCartIDs[index][UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int {
+      let updatedCount = inShoppingCartCount + 1
+      itemsInShoppingCartIDs[index].updateValue(
+        updatedCount as AnyObject,
+        forKey: UserDefaultsKeys.inShoppingCartCount.rawValue
+      )
+      
+      UserDefaults.standard.set(
+        itemsInShoppingCartIDs,
+        forKey: itemsInShoppingCartArrayKey
+      )
+    }
+  }
+  
+  func saveNewItemInShoppingCart(with id: String, type: String) {
+    let productIdDictionary: ProductDictionary = [
+      UserDefaultsKeys.id.rawValue:id as AnyObject,
+      UserDefaultsKeys.type.rawValue:type as AnyObject,
+      UserDefaultsKeys.inShoppingCartCount.rawValue:1 as AnyObject
+    ]
+    itemsInShoppingCartIDs.append(productIdDictionary)
+    
+    UserDefaults.standard.set(
+      itemsInShoppingCartIDs,
+      forKey: itemsInShoppingCartArrayKey
+    )
   }
 }
 
-//MARK: - CartViewControllerDelegate
+//MARK: - CartViewControllerDelegate ******
 extension TabBarController: CartViewControllerDelegate {
   
   //The user removed a product from the shopping cart with count > 0

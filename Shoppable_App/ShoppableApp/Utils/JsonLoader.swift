@@ -2,17 +2,48 @@
  JsonLoader.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/24/23.
+ Created on 1/24/23.
  
  Load the data from the "products.json" file
  */
 
 import Foundation
 
-class JsonLoader {
+
+//MARK: - Product Structs ******
+struct ProductInformation: Decodable {
+  let products: [Product]
+}
+
+struct Product: Decodable {
+  let id: String
+  let name: String
+  let price: Price
+  let info: Info?
+  let type: String
+  let imageUrl: String?
+}
+
+struct Price: Decodable {
+  let value: Double
+  let currency: String
+}
+
+struct Info: Decodable {
+  let material: String?
+  let numberOfSeats: Int?
+  let color: String?
+}
+
+struct ProductCollection {
+  let type: String
+  let products: [Product]
+}
+
+struct JsonLoader {
   
-  //MARK: - Load JSON Data
-  func loadJsonData(from fileName: String) -> [ProductDictionary] {
+  //MARK: - Load JSON Data ******
+  func decodingJsonData(from fileName: String) -> ProductInformation?  {
     
     var data: Data
     
@@ -23,48 +54,58 @@ class JsonLoader {
       }
       catch {
         print("ERROR loading JSON data: \(fileName), with error: \(error.localizedDescription)")
-        return []
+        return nil
       }
       
       do {
-        //Check if it's possible to get the JSON data
-        if let json = try JSONSerialization.jsonObject(with: data) as? [String: AnyObject] {
-          let productsDataDict = (json[ProductDataKeys.products.rawValue] as! [ProductDictionary])
-          return productsDataDict
-        }
+        let decoder = JSONDecoder()
+        let information = try decoder.decode(ProductInformation.self, from: data)
+        return information
+        
       }
       catch let error {
         print("ERROR: \(error.localizedDescription)")
+        return nil
       }
     }
-    return []
+    return nil
   }
   
+  
+  //MARK: - Return Product Collections ******
   //Create a set of products for every product type
-  func returnProductCollectionTypeArray(from fileName: String) -> [ProductDictionary] {
-    let array = loadJsonData(from: fileName)
+  func returnProductCollectionTypeArray(from fileName: String) -> [ProductCollection] {
     
-    //Loop through the enum CollectionType
-    let collectionTypes = CollectionType.allCases
-    var productCollections: [ProductDictionary] = []
-    for type in collectionTypes {
-      let typeRawValue = type.rawValue
+    if let infoArray = decodingJsonData(from: fileName) {
       
-      //Only get the products that match the product type
-      let newArr = array.filter {
-        $0[ProductDataKeys.type.rawValue] as! String == typeRawValue
+      let array = infoArray.products
+      
+      //Loop through the enum CollectionType
+      let collectionTypes = CollectionType.allCases
+      var productCollections: [ProductCollection] = []
+      for type in collectionTypes {
+        let typeRawValue = type.rawValue
+        
+        //Only get the products that match the product type
+        let newArr = array.filter {
+          $0.type == typeRawValue
+        }
+        
+        let collection = ProductCollection(
+          type: typeRawValue,
+          products: newArr
+        )
+        productCollections.append(collection)
       }
-      let productDict: ProductDictionary = [
-        ProductDataKeys.type.rawValue : typeRawValue as AnyObject,
-        ProductDataKeys.products.rawValue : newArr as AnyObject
-      ]
-      productCollections.append(productDict)
+      return productCollections
     }
-    return productCollections
+    
+    return []
   }
   
   
 }
+
 
 
 

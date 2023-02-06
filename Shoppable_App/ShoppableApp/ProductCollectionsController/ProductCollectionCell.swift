@@ -2,7 +2,7 @@
  ProductCollectionCell.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/19/23.
+ Created on 1/19/23.
  
  This is the cell from ProductOverviewViewController's collecionView
  */
@@ -11,7 +11,7 @@ import UIKit
 
 class ProductCollectionCell: UICollectionViewCell {
 
-  //MARK: - Properties
+  //MARK: - Properties ******
   
   //Container View
   @IBOutlet weak var containerView: UIView!
@@ -24,7 +24,7 @@ class ProductCollectionCell: UICollectionViewCell {
   @IBOutlet weak var collectionNameLabel: UILabel!
   
   
-  //MARK: - Methods
+  //MARK: - Methods ******
   override func awakeFromNib() {
     super.awakeFromNib()
 

@@ -2,9 +2,9 @@
 	[
 		{
 			"id": "1",
-			"name":  "Henriksdal",
+			"name":  "Pretty Chair 1",
 			"price": {
-				"value": 499,
+				"value": 49.90,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -16,9 +16,9 @@
 		},
 		{
 			"id": "2",
-			"name":  "Lidhult",
+			"name":  "Comfy Couch 1",
 			"price": {
-				"value": 1035,
+				"value": 103.50,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -29,9 +29,9 @@
 			"imageUrl": "https://shop.static.ingka.ikea.com/PIAimages/0667779_PE714073_S4.JPG"
 		}, {
 			"id": "3",
-			"name":  "Nyhamn",
+			"name":  "Comfy Couch 2",
 			"price": {
-				"value": 3395,
+				"value": 339.50,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -43,9 +43,9 @@
 		},
 		{	
 			"id": "4",
-			"name":  "Landskrona",
+			"name":  "Comfy Couch 3",
 			"price": {
-				"value": 7495,
+				"value": 749.50,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -57,9 +57,9 @@
 		},
 		{	
 			"id": "5",
-			"name":  "Odger",
+			"name":  "Pretty Chair 2",
 			"price": {
-				"value": 695.20,
+				"value": 69.20,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -71,9 +71,9 @@
 		},
 		{	
 			"id": "6",
-			"name":  "Landskrona",
+			"name":  "Comfy Couch 4",
 			"price": {
-				"value": 14396,
+				"value": 1439.60,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -85,9 +85,9 @@
 		},
 		{	
 			"id": "7",
-			"name":  "Klippan",
+			"name":  "Comfy Couch 5",
 			"price": {
-				"value": 1995,
+				"value": 199.50,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -99,9 +99,9 @@
 		},
 		{	
 			"id": "8",
-			"name":  "Kullaberg",
+			"name":  "Pretty Chair 3",
 			"price": {
-				"value": 499,
+				"value": 49.90,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -113,9 +113,9 @@
 		},
 		{	
 			"id": "9",
-			"name":  "Stocksund",
+			"name":  "Comfy Couch 6",
 			"price": {
-				"value": 4995,
+				"value": 499.50,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -127,9 +127,9 @@
 		},
 		{	
 			"id": "10",
-			"name":  "IKEA PS 2012",
+			"name":  "Pretty Chair 4",
 			"price": {
-				"value": 495,
+				"value": 49.50,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -141,9 +141,9 @@
 		},
 		{	
 			"id": "11",
-			"name":  "Henriksdal",
+			"name":  "Pretty Chair 5",
 			"price": {
-				"value": 1195,
+				"value": 119.50,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -155,9 +155,9 @@
 		},
 		{	
 			"id": "12",
-			"name":  "Industriell",
+			"name":  "Pretty Chair 6",
 			"price": {
-				"value": 499,
+				"value": 49.90,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -169,9 +169,9 @@
 		},
 		{	
 			"id": "13",
-			"name":  "Janinge",
+			"name":  "Pretty Chair 7",
 			"price": {
-				"value": 395,
+				"value": 39.50,
 				"currency": "kr"
 			}, 
 			"info": {
@@ -183,9 +183,9 @@
 		},
 		{	
 			"id": "14",
-			"name":  "Ektorp",
+			"name":  "Comfy Couch 7",
 			"price": {
-				"value": 4495,
+				"value": 449.50,
 				"currency": "kr"
 			}, 
 			"info": {

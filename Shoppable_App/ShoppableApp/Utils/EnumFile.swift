@@ -2,10 +2,10 @@
  EnumFile.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/25/23.
+ Created on 1/25/23.
  
  These enums contain keys to use with UserDefaults,
- Dictionaries and JSON files.
+ Dictionaries.
  Organizing them like this helps to avoid typos.
  */
 
@@ -19,24 +19,7 @@ import Foundation
 enum UserDefaultsKeys: String {
   case id
   case inShoppingCartCount
-  case productCollectionType
-}
-
-
-//Keys used to get product data from the JSON file
-enum ProductDataKeys: String {
-  case products
-  case id
-  case name
-  case price
-  case value
-  case currency
-  case info
-  case color
   case type
-  case imageUrl
-  case numberOfSeats
-  case material
 }
 
 
@@ -55,6 +38,7 @@ enum CollectionType: String, CaseIterable {
     }
   }
 }
+
 
 //Keys used in the Checkmark animation
 enum AnimationKey: String {

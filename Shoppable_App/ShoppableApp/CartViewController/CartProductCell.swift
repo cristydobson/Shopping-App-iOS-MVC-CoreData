@@ -2,7 +2,7 @@
  CartProductCell.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/19/23.
+ Created on 1/19/23.
  
  This is the cell from CartViewController's tableView
  */
@@ -17,7 +17,7 @@ protocol CartProductCellDelegate: AnyObject {
 
 class CartProductCell: UITableViewCell {
 
-  //MARK: - Properties
+  //MARK: - Properties ******
   
   //Delegate
   weak var cartProductCellDelegate: CartProductCellDelegate?
@@ -46,7 +46,7 @@ class CartProductCell: UITableViewCell {
   var newPickerValue = 0
   
   
-  //MARK: - Methods
+  //MARK: - Methods ******
   override func awakeFromNib() {
     super.awakeFromNib()
     
@@ -89,7 +89,7 @@ class CartProductCell: UITableViewCell {
     productImageView.image = nil
   }
   
-  //MARK: - Setup UI Methods
+  //MARK: - Setup UI Methods ******
   func setupOptionsButton() {
     /*
      Add the "Remove Item" from Shopping Cart command in the
@@ -116,13 +116,12 @@ class CartProductCell: UITableViewCell {
     productImageView.addCornerRadius(5)
   }
     
-  //MARK: - Button Actions
-  @IBAction func optionsButtonAction(_ sender: UIButton) {
-  }
+  //MARK: - Button Actions ******
+  @IBAction func optionsButtonAction(_ sender: UIButton) { }
 }
 
 
-//MARK: - UITextFieldDelegate
+//MARK: - UITextFieldDelegate ******
 extension CartProductCell: UITextFieldDelegate {
   /*
    Tell the CartViewController that the user tapped on

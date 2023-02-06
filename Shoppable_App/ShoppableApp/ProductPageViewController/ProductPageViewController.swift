@@ -2,7 +2,7 @@
  ProductPageViewController.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/19/23.
+ Created on 1/19/23.
  
  Display the product the user tapped on
  in ProductCatalogViewController
@@ -11,12 +11,12 @@
 import UIKit
 
 protocol ProductPageViewControllerDelegate: AnyObject {
-  func didTapAddToCartButtonFromProductPage(for product: ProductDictionary)
+  func didTapAddToCartButtonFromProductPage(for product: Product)
 }
 
 class ProductPageViewController: UIViewController {
 
-  //MARK: - Properties
+  //MARK: - Properties ******
   
   //Delegate
   weak var productPageViewControllerDelegate: ProductPageViewControllerDelegate?
@@ -24,17 +24,11 @@ class ProductPageViewController: UIViewController {
   //Blur View
   @IBOutlet weak var blurView: UIView!
   
-  //Product Information Class
-  var productInfoClass: ProductInformation?
-  
-  //Product Dictionary
-  var productDictionary: ProductDictionary?
+  //Product Object
+  var productObject: Product?
   
   //Product Image
   @IBOutlet weak var productImageView: UIImageView!
-  
-  //ShoppingCart
-  var itemInShoppingCartInfoDict: ProductDictionary = [:]
   
   //ScrollView - Container View
   @IBOutlet weak var containerScrollView: UIScrollView!
@@ -56,7 +50,7 @@ class ProductPageViewController: UIViewController {
   var checkmark: CheckmarkView!
   
   
-  //MARK: - View Controller Setup
+  //MARK: - View Controller Setup ******
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -67,29 +61,20 @@ class ProductPageViewController: UIViewController {
     //ScrollView - Container View
     containerScrollView.contentInset = UIEdgeInsets(top: 0, left: 0,
                                                     bottom: 120, right: 0)
+
+    //Setup UI Style
+    setupThumbnailStyle()
+    setupAddToCartButton(isOn: true)
     
-    //Product Information Class
-    productInfoClass = ProductInformation()
-   
-    //Add the image of the product
-    imageLoader = ImageDownloader()
-    
-    //Setup UI
-    setupThumbnail()
+    //Setup Product Info
+    loadImage()
     setupProductInfoLabels()
-    setupAddToCartButton()
+    
   }
   
-  //MARK: - Button Actions
-  @IBAction func addToCartButtonAction(_ sender: UIButton) {
-    //Update the Shopping Cart through the delegate
-    productPageViewControllerDelegate?.didTapAddToCartButtonFromProductPage(for: productDictionary!)
-    blurView.showAnimatedAsBlur(withDuration: 0.2, delay: 0)
-    addCheckmarkAnimation()
-  }
-  
-  //MARK: - Setup UI Methods
-  func setupThumbnail() {
+  //MARK: - Setup UI Style ******
+  func setupThumbnailStyle() {
+    
     //Customize the edge of the ContainerView
     productImageView.addBorderStyle(
       borderWidth: 1,
@@ -105,15 +90,48 @@ class ProductPageViewController: UIViewController {
       lightColor: .gray,
       darkColor: .white
     )
+  }
+  
+  //Setup the Add To Cart button style and text
+  func setupAddToCartButton(isOn: Bool) {
     
-    //Load the image of the product
+    //Button's default text
+    let addToCartButtonText = NSLocalizedString("Add to Shopping Cart",
+                                                comment: "Add to Shopping Cart Button label text")
+    attributedCartButtonText = addToCartButtonText.toStyledString(with: 16, and: .semibold)
+    
+    //Check if the button has a Checkmark animating on top of it
+    let buttonText = isOn ? attributedCartButtonText : NSAttributedString(string: "",
+                                                                          attributes: nil)
+    
+    //Set up the button's text
+    addToCartButton.setAttributedTitle(
+      buttonText,
+      for: .normal
+    )
+    
+    //Set up the button's style
+    addToCartButton.addCornerRadius(25)
+    
+    addToCartButton.isEnabled = isOn
+  }
+  
+  //MARK: - Setup Product Info ******
+  
+  //Load the image of the product from a URL
+  func loadImage() {
+    
     if
-      let imageUrlString = productDictionary?[ProductDataKeys.imageUrl.rawValue] as? String,
-      let imageURL = URL(string: imageUrlString) {
+      let product = productObject,
+      let imageURL = canCreateImageUrl(from: product)
+    {
       
+      //Attempt to load image
       let _ = imageLoader?.loadImage(imageURL) { result in
         do {
           let image = try result.get()
+          
+          //The UI must be accessed through the main thread
           DispatchQueue.main.async {
             self.productImageView.image = image
           }
@@ -122,89 +140,107 @@ class ProductPageViewController: UIViewController {
           print("ERROR loading image with error: \(error.localizedDescription)!")
         }
       }
+      
     }
+    
   }
   
   func setupProductInfoLabels() {
-    if let productDict = productDictionary {
+    if let productObj = productObject {
       
       //Add the name of the product
-      let productName = productInfoClass?.getProductName(from: productDict).uppercased()
-      let attributedName = productName?.toStyledString(with: 18, and: .bold)
-      productNameLabel.attributedText = attributedName
+      productNameLabel.attributedText = getAttributedName(from: productObj,
+                                                          withSize: 18)
       
       //Add the description of the product
-      if let productInfo = productInfoClass?.getProductInfo(from: productDict) {
-        let infoArray = productInfoClass?.getProductInfoKeys(from: productInfo)
-        let productDescription = productInfoClass?.createDescriptionString(
-          with: infoArray!,
-          from: productInfo
-        )
-        let attributedDescription = productDescription?.toStyledString(with: 18, and: .regular)
-        productDescriptionLabel.attributedText = attributedDescription
-      }
+      productDescriptionLabel.attributedText = getAttributedDescription(from: productObj,
+                                                                        withSize: 18)
       
       //Add the price of the product
-      let priceCurrency = productInfoClass?.getProductPriceCurrency(from: productDict)
-      let price = productInfoClass?.getProductPrice(from: productDict).toCurrencyFormat(in: priceCurrency!)
-      let attributedPriceString = price!.toCurrencyAttributedString(with: 34)
-      productPriceLabel.attributedText = attributedPriceString
+      productPriceLabel.attributedText = getAttributedPrice(from: productObj,
+                                                            withSize: 34)
     }
   }
   
-  //Setup the Add To Cart button style and text
-  func setupAddToCartButton() {
-    let addToCartButtonText = NSLocalizedString("Add to Shopping Cart",
-                                                comment: "Add to Shopping Cart Button label text")
-    attributedCartButtonText = addToCartButtonText.toStyledString(with: 16, and: .semibold)
-    addToCartButton.setAttributedTitle(
-      attributedCartButtonText,
-      for: .normal
-    )
-    addToCartButton.addCornerRadius(25)
+  //MARK: - Button Actions ******
+  @IBAction func addToCartButtonAction(_ sender: UIButton) {
+    
+    /*
+     Update the products in the Shopping Cart array
+     in TabBarController
+     */
+    productPageViewControllerDelegate?.didTapAddToCartButtonFromProductPage(for: productObject!)
+    
+    /*
+     Show a blurred background view while the Checkmark animation
+     plays on the 'Add To Cart' button
+     */
+    blurView.showAnimatedAsBlur(withDuration: 0.2, delay: 0)
+    setupCheckmarkAnimation()
   }
+  
 }
 
-//MARK: Checkmark Animation
+//MARK: Checkmark Animation ******
 extension ProductPageViewController {
-  
+   
   /*
-   Animate a checkmark on the Add To Cart button
+   Animate a checkmark on the 'Add To Cart' button
    as feedback for the user
   */
-  func addCheckmarkAnimation() {
+  
+  //Setup the Checkmark animation
+  func setupCheckmarkAnimation() {
     checkmark = CheckmarkView()
     let checkmarkHeight = addToCartButton.frame.height-4
     let checkMarkRect = CGRect(x: 0, y: 0,
                                width: checkmarkHeight,
                                height: checkmarkHeight)
+    
     checkmark.setupAnimation(
       frame: checkMarkRect,
-      initialLayerColor: .white,
       animatedLayerColor: .white,
       strokeWidth: 4,
       animated: true
     )
+    
+    //Add the checkmark to its container view
     checkmarkBGView.addSubview(self.checkmark)
-    addToCartButton.setAttributedTitle(
-      NSAttributedString(string: "", attributes: nil),
-      for: .normal
-    )
+    
+    setupCheckmarkDependentUI()
+    animateCheckmark()
+  }
+  
+  //Setup the checkmark's dependent UI
+  func setupCheckmarkDependentUI() {
+    
+    //Remove the text from the 'Add To Cart' button
+    setupAddToCartButton(isOn: false)
+  }
+  
+  //Start animating the Checkmark
+  func animateCheckmark() {
     
     checkmark.animate(duration: 0.2) { finished in
+      
       if finished {
+        
+        //The UI must be accessed through the main thread
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          
           //Remove the checkmark after it's done animating
           self.checkmark.removeFromSuperview()
           self.checkmark = nil
+          
           //Return the Add To Cart button back to normal
-          self.addToCartButton.setAttributedTitle(
-            self.attributedCartButtonText,
-            for: .normal
-          )
+          self.setupAddToCartButton(isOn: true)
+          
+          //Remove the blurred background view
           self.blurView.hideAnimatedAsBlur(withDuration: 0.1, delay: 0)
         }
       }
     }
+    
   }
+  
 }

@@ -2,7 +2,7 @@
  ProductCatalogCell.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/19/23.
+ Created on 1/19/23.
  
  This is the cell from ProductCatalogViewController's collectionView
  */
@@ -15,7 +15,7 @@ protocol ProductCatalogCellDelegate: AnyObject {
 
 class ProductCatalogCell: UICollectionViewCell {
 
-  //MARK: - Properties
+  //MARK: - Properties ******
   
   //Delegate
   weak var productCatalogCellDelegate: ProductCatalogCellDelegate?
@@ -36,7 +36,7 @@ class ProductCatalogCell: UICollectionViewCell {
   @IBOutlet weak var addToCartButton: UIButton!
   
   
-  //MARK: - Methods
+  //MARK: - Methods ******
   override func awakeFromNib() {
     super.awakeFromNib()
     
@@ -60,12 +60,12 @@ class ProductCatalogCell: UICollectionViewCell {
     productImageView.image = nil
   }
   
-  //MARK: - Setup UI Methods
+  //MARK: - Setup UI Methods ******
   func setupThumbnail() {
     productImageView.addCornerRadius(5)
   }
   
-  //MARK: - Button Actions
+  //MARK: - Button Actions ******
   @IBAction func addToCartButtonAction(_ sender: UIButton) {
     
     //Animate the cell's Add To Cart button being tapped

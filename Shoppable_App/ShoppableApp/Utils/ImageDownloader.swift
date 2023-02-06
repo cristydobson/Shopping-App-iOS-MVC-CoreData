@@ -2,7 +2,7 @@
  ImageDownloader.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/21/23.
+ Created on 1/21/23.
  
  This class' whole function is to load an ImgaeUrl
  */
@@ -13,12 +13,12 @@ import UIKit
 
 class ImageDownloader {
   
-  //MARK: - Properties
+  //MARK: - Properties ******
   private var loadedImages: [URL: UIImage] = [:]
   private var runningRequests: [UUID: URLSessionDataTask] = [:]
   
   
-  //MARK: - Load Images from a URL
+  //MARK: - Load Images from a URL ******
   func loadImage(_ url: URL, _ completion: @escaping (Result<UIImage, Error>) -> Void) -> UUID? {
     
     //Check if this URL exists in in-memory cache

@@ -2,7 +2,7 @@
 //  ShoppableAppTests.swift
 //  ShoppableAppTests
 //
-//  Created by Cristina Dobson on 1/23/23.
+//  Created on 1/23/23.
 //
 
 import XCTest
@@ -11,116 +11,65 @@ import XCTest
 final class ShoppableAppTests: XCTestCase {
   
   var subject: ProductCatalogViewController!
-  var subjectTwo: ProductInformation!
 
   override func setUpWithError() throws {
     
     try super.setUpWithError()
     
     subject = ProductCatalogViewController()
-    subjectTwo = ProductInformation()
     
     //Populating the array of products
     subject.productList = [
       //Chair
-      [
-        ProductDataKeys.id.rawValue : "1" as AnyObject,
-        ProductDataKeys.name.rawValue : "Henriksdal" as AnyObject,
-        ProductDataKeys.price.rawValue : [
-          ProductDataKeys.value.rawValue : 499 as AnyObject,
-          ProductDataKeys.currency.rawValue : "kr" as AnyObject
-        ] as AnyObject,
-        ProductDataKeys.info.rawValue : [
-          ProductDataKeys.material.rawValue : "wood with cover" as AnyObject,
-          ProductDataKeys.color.rawValue : "white" as AnyObject
-        ] as AnyObject,
-        ProductDataKeys.type.rawValue : "chair" as AnyObject,
-        ProductDataKeys.imageUrl.rawValue : "https://shop.static.ingka.ikea.com/PIAimages/0462849_PE608354_S4.JPG" as AnyObject
-      ],
+      Product(
+        id: "1",
+        name: "Pretty Chair",
+        price: Price(value: 49.90, currency: "kr"),
+        info: Info(material: "wood with cover", numberOfSeats: nil, color: "white"),
+        type: "chair",
+        imageUrl: "https://shop.static.ingka.ikea.com/PIAimages/0462849_PE608354_S4.JPG"
+      ),
       //Couch
-      [
-        ProductDataKeys.id.rawValue : "2" as AnyObject,
-        ProductDataKeys.name.rawValue : "Lidhult" as AnyObject,
-        ProductDataKeys.price.rawValue : [
-          ProductDataKeys.value.rawValue : 1035 as AnyObject,
-          ProductDataKeys.currency.rawValue : "kr" as AnyObject
-        ] as AnyObject,
-        ProductDataKeys.info.rawValue : [
-          ProductDataKeys.numberOfSeats.rawValue : 4 as AnyObject,
-          ProductDataKeys.color.rawValue : "beige" as AnyObject
-        ] as AnyObject,
-        ProductDataKeys.type.rawValue : "couch" as AnyObject,
-        ProductDataKeys.imageUrl.rawValue : "https://shop.static.ingka.ikea.com/PIAimages/0667779_PE714073_S4.JPG" as AnyObject
-      ]
-    ]
-    
-    //Populating the shopping cart array from UserDefaults
-    subject.itemsInShoppingCartIDs = [
-      [
-        UserDefaultsKeys.id.rawValue : "1" as AnyObject,
-        UserDefaultsKeys.inShoppingCartCount.rawValue : 6 as AnyObject,
-        UserDefaultsKeys.productCollectionType.rawValue : "chair" as AnyObject
-      ],
-      [
-        UserDefaultsKeys.id.rawValue : "2" as AnyObject,
-        UserDefaultsKeys.inShoppingCartCount.rawValue : 2 as AnyObject,
-        UserDefaultsKeys.productCollectionType.rawValue : "couch" as AnyObject
-      ]
+      Product(
+        id: "2",
+        name: "Comfy Couch",
+        price: Price(value: 103.50, currency: "kr"),
+        info: Info(material: nil, numberOfSeats: 4, color: "beige"),
+        type: "couch",
+        imageUrl: "https://shop.static.ingka.ikea.com/PIAimages/0667779_PE714073_S4.JPG"
+      )
     ]
   }
   
   override func tearDownWithError() throws {
     subject = nil
-    subjectTwo = nil
     
     try super.tearDownWithError()
   }
   
-  func testGettingProductNameFromDictionary() {
+  func testGettingProductName() {
     let product = subject.productList.first!
-    XCTAssertEqual(subjectTwo.getProductName(from: product), "Henriksdal")
+    XCTAssertEqual(product.name, "Pretty Chair")
   }
   
-  func testGettingProductInfoFromDictionary() {
+  func testCreatingDescriptionStringForChair() {
     let product = subject.productList.first!
-    XCTAssertNotNil(subjectTwo.getProductInfo(from: product))
+    XCTAssertEqual(createDescriptionString(for: product), "wood with cover, white")
   }
   
-  func testGettingProductInfoKeysFromDictionary() {
-    let product = subject.productList.first!
-    let productInfo = product[ProductDataKeys.info.rawValue] as! ProductDictionary
-    XCTAssertEqual(subjectTwo.getProductInfoKeys(from: productInfo).count, 2)
-  }
-  
-  func testCreatingDescriptionStringForChairFromInfoKeys() {
-    let product = subject.productList.first!
-    let productInfo = product[ProductDataKeys.info.rawValue] as! ProductDictionary
-    let infoKeys = subjectTwo.getProductInfoKeys(from: productInfo)
-    XCTAssertEqual(subjectTwo.createDescriptionString(with: infoKeys, from: productInfo), "wood with cover, white")
-  }
-  
-  func testCreatingDescriptionStringForCouchFromInfoKeys() {
+  func testCreatingDescriptionStringForCouch() {
     let product = subject.productList.last!
-    let productInfo = product[ProductDataKeys.info.rawValue] as! ProductDictionary
-    let infoKeys = subjectTwo.getProductInfoKeys(from: productInfo)
-    XCTAssertEqual(subjectTwo.createDescriptionString(with: infoKeys, from: productInfo), "4 seats, beige")
+    XCTAssertEqual(createDescriptionString(for: product), "4 seats, beige")
   }
   
-  
-  func testGettingProductPriceFromDictionary() {
+  func testGettingProductPrice() {
     let product = subject.productList.first!
-    XCTAssertEqual(subjectTwo.getProductPrice(from: product), 499.0)
+    XCTAssertEqual(product.price.value, 49.90)
   }
 
-  func testGettingProductPriceCurrencyFromDictionary() {
+  func testGettingProductPriceCurrency() {
     let product = subject.productList.first!
-    XCTAssertEqual(subjectTwo.getProductPriceCurrency(from: product), "kr")
-  }
-  
-  func testGettingProductCountInShoppingCart() {
-    let product = subject.productList.first!
-    let productsInShoppingCartIdsArray = subject.itemsInShoppingCartIDs
-    XCTAssertEqual(subjectTwo.getProductCountInShoppingCart(for: product, from: productsInShoppingCartIdsArray), 6)
+    XCTAssertEqual(product.price.currency, "kr")
   }
 
 }

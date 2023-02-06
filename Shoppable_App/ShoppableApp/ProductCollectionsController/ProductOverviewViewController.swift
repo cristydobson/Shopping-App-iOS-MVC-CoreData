@@ -2,7 +2,7 @@
  ProductOverviewViewController.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/19/23.
+ Created on 1/19/23.
  
  This ViewController shows the product collections by type
  */
@@ -14,12 +14,14 @@ typealias ProductDictionary = [String:AnyObject]
 
 //Delegate -> TabBarController
 protocol ProductOverviewViewControllerDelegate: AnyObject {
-  func updateCartControllerFromProductCatalogController(with product: ProductDictionary)
+  func updateCartControllerFromProductCatalogController(with product: Product)
 }
 
 class ProductOverviewViewController: UIViewController {
 
-  //MARK: - Properties
+  //MARK: - Properties ******
+  
+  var screenTitle = ""
   
   //Delegate
   weak var productOverviewViewControllerDelegate: ProductOverviewViewControllerDelegate?
@@ -27,43 +29,31 @@ class ProductOverviewViewController: UIViewController {
   //Segue Identifiers
   let productCatalogSegue = "ProductCatalogViewControllerSegue"
   
-  //ShoppingCart
-  var itemsInShoppingCartIDs: [ProductDictionary] = []
-  
   //Collection View
   @IBOutlet weak var productCollectionsList: UICollectionView!
   let productCollectionCellID = "ProductCollectionCell"
   
   //Products Data
-  var productCollections: [ProductDictionary] = []
-  var userTappedProductCollection: [ProductDictionary] = []
+  var productCollections: [ProductCollection] = []
+  var userTappedProductCollection: [Product] = []
   var userTappedProductCollectionName = ""
   
   //Image Loader
   var imageLoader: ImageDownloader?
   
   
-  //MARK: - View Controller' Life Cycle
+  //MARK: - View Controller' Life Cycle ******
   override func viewDidLoad() {
     super.viewDidLoad()
     
     //NavigationBar
-    title = NSLocalizedString("Collections", comment: "ProductOverviewViewController title")
-    
-    //Image Loader
-    imageLoader = ImageDownloader()
+    title = screenTitle
 
     //Product Collections CollectionView setup
-    productCollectionsList.delegate = self
-    productCollectionsList.dataSource = self
-    let cellNib = UINib(nibName: productCollectionCellID, bundle: nil)
-    productCollectionsList.register(
-      cellNib,
-      forCellWithReuseIdentifier: productCollectionCellID
-    )
+    setupCollectionView(productCollectionCellID, for: productCollectionsList, in: self)
   }
   
-  //MARK: - View transition
+  //MARK: - View transition ******
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     productCollectionsList.reloadData()
@@ -77,50 +67,53 @@ class ProductOverviewViewController: UIViewController {
     }
   }
    
-  //MARK: - Navigation
+  //MARK: - Navigation ******
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     //Pass data to ProductCatalogViewController
     if segue.identifier == productCatalogSegue {
       let viewController = segue.destination as! ProductCatalogViewController
       viewController.productList = userTappedProductCollection
       viewController.collectionName = userTappedProductCollectionName
-      viewController.itemsInShoppingCartIDs = itemsInShoppingCartIDs
+      viewController.imageLoader = imageLoader
+      viewController.backButtonTitle = screenTitle
       viewController.productCatalogViewControllerDelegate = self
     }
   }
+  
 }
 
-//MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+//MARK: - UICollectionViewDelegate, UICollectionViewDataSource ******
 extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionViewDataSource {
   
+  //1 section
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 1
   }
   
+  //All product collections in the array in 1 section
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return productCollections.count
   }
   
+  //Load the Product Collection Cell
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: productCollectionCellID, for: indexPath) as! ProductCollectionCell
     
     //Add the name of the product type
-    let collectionType = CollectionType.allCases[indexPath.row]
-    let collectionName = collectionType.productTypeTitle
-    cell.collectionNameLabel.text = NSLocalizedString(collectionName,
-                                                      comment: "Collection type")
+    cell.collectionNameLabel.text = getProductCollectionTypeLocalizedName(from: indexPath.row)
     
-    //Add the image of the product type
-    let currentCollection = productCollections[indexPath.row]
-    if let collectionProducts = currentCollection[ProductDataKeys.products.rawValue] as? [ProductDictionary],
-       let firstProduct = collectionProducts.first,
-       let productImageUrlString = firstProduct[ProductDataKeys.imageUrl.rawValue] as? String,
-       let productImageURL = URL(string: productImageUrlString) {
-      
+    //Load the image of the product type from a URL
+    if
+      let firstItem = productCollections[indexPath.row].products.first,
+      let productImageURL = canCreateImageUrl(from: firstItem)
+    {
+      //Attempt to load image
       let token = imageLoader?.loadImage(productImageURL) { result in
         do {
           let image = try result.get()
+          
+          //The UI must be accessed through the main thread
           DispatchQueue.main.async {
             cell.productImageView.image = image
           }
@@ -130,7 +123,12 @@ extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionV
         }
       }
       
-      cell.onReuse = {
+      /*
+       When the cell is being reused, cancel loading the image.
+       Use [unowned self] to avoid retention of self
+       in the cell's onReuse() closure.
+       */
+      cell.onReuse = { [unowned self] in
         if let token = token {
           self.imageLoader?.cancelImageDownload(token)
         }
@@ -140,76 +138,78 @@ extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionV
     return cell
   }
   
+  //The cell was tapped 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
     /*
      Get the list of products to pass to ProductCatalogViewController
-     based on the type the user tapped on
+     based on the product type the user tapped on
      */
-    let currentProductTypeCase = CollectionType.allCases[indexPath.row]
-    let currentProductType = currentProductTypeCase.rawValue
-    for productCollection in productCollections {
-      if
-        let productType = productCollection[ProductDataKeys.type.rawValue] as? String,
-         productType == currentProductType,
-        let productList: [ProductDictionary] = productCollection[ProductDataKeys.products.rawValue] as? [ProductDictionary]
-      {
-        userTappedProductCollection = productList
-        userTappedProductCollectionName = currentProductTypeCase.productTypeTitle
-        break
-      }
-    }
+    let index = indexPath.row
+    let productList = productCollections[index].products
+    userTappedProductCollection = productList
+    userTappedProductCollectionName = getProductCollectionTypeLocalizedName(from: index)
+    
+    //Go to ProductCatalogViewController
     performSegue(withIdentifier: productCatalogSegue, sender: self)
   }
   
   //Animate the cell being tapped
   func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
     
-    let cell = collectionView.cellForItem(at: indexPath) as! ProductCollectionCell
-    UIView.animate(
-      withDuration: 0.2,
-      animations: {
-        cell.alpha = 0.5
-    }) { (_) in
-      UIView.animate(withDuration: 0.2) {
-        cell.alpha = 1.0
-      }
-    }
+    let cell = collectionView.cellForItem(at: indexPath)
+    highlightCellOnTap(for: cell!)
     return true
   }
+  
 }
 
-//MARK: - UICollectionViewDelegateFlowLayout
+//MARK: - UICollectionViewDelegateFlowLayout ******
 extension ProductOverviewViewController: UICollectionViewDelegateFlowLayout {
+  
+  //Set the cell's size
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    
     //Change cell's size based on device orientation
+    //LANDSCAPE
     if UIDevice.current.orientation.isLandscape {
-      let landscapeWidth = (view.frame.width/2.3)
+      let landscapeWidth = (view.frame.width/2.4)
       return CGSize(width: landscapeWidth, height: landscapeWidth*0.7)
     }
+    
+    //PORTRAIT
     let portraitWidth = view.frame.width - 40
     return CGSize(width: portraitWidth, height: portraitWidth * 0.8)
   }
   
+  //Set the insets around the CollectionView
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
   }
   
+  //Set the vertical space in between cells
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
     return 10.0
   }
   
+  //Set the horizontal space in between cells
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
     return 0.0
   }
+  
 }
 
-//MARK: - ProductCatalogViewControllerDelegate
+//MARK: - ProductCatalogViewControllerDelegate ******
 extension ProductOverviewViewController: ProductCatalogViewControllerDelegate {
-  //Update the products in the Shopping Cart array
-  func didTapAddToCartButtonFromProductCatalogController(for product: ProductDictionary) {
+  
+  /*
+   Update the products in the Shopping Cart array
+   in TabBarController
+   */
+  func didTapAddToCartButtonFromProductCatalogController(for product: Product) {
     productOverviewViewControllerDelegate?.updateCartControllerFromProductCatalogController(with: product)
   }
+  
 }
 
 

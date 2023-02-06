@@ -2,7 +2,7 @@
  CheckmarkView.swift
  ShoppableApp
  
- Created by Cristina Dobson on 1/24/23.
+ Created on 1/24/23.
  
  Animate a Checkmark on the Add To Cart button in
  ProductPageViewController
@@ -12,14 +12,7 @@ import UIKit
 
 class CheckmarkView: UIView, CAAnimationDelegate {
 
-  //MARK: - Properties
-  
-  //Private properties to customize the animation
-  private var initialLayerColor: UIColor = UIColor.green {
-    didSet {
-      initialLayer.strokeColor = initialLayerColor.cgColor
-    }
-  }
+  //MARK: - Properties ******
   
   private var animatedLayerColor: UIColor = UIColor.green {
     didSet {
@@ -29,7 +22,6 @@ class CheckmarkView: UIView, CAAnimationDelegate {
   
   private var strokeWidth: CGFloat = 8 {
     didSet {
-      initialLayer.lineWidth = strokeWidth
       animatedLayer?.lineWidth = strokeWidth
     }
   }
@@ -46,41 +38,28 @@ class CheckmarkView: UIView, CAAnimationDelegate {
     }
   }
   
-  private lazy var initialLayer: CAShapeLayer = {
-    return self.createCheckMarkLayer(
-      strokeColor: self.initialLayerColor,
-      strokeEnd: 1
-    )
-  }()
-  
   private var animatedLayer: CAShapeLayer?
   
   
-  //MARK: - Init
+  //MARK: - Init ******
   override init(frame: CGRect) {
     super.init(frame: frame)
   }
   
-  //MARK: - Required Init
+  //MARK: - Required Init ******
   public required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
   
-  //MARK: - Animation Methods
+  //MARK: - Animation Methods ******
   //Set up the initial values for the animation
-  func setupAnimation(frame: CGRect, initialLayerColor: UIColor, animatedLayerColor: UIColor, strokeWidth: CGFloat, animated: Bool) {
+  func setupAnimation(frame: CGRect, animatedLayerColor: UIColor, strokeWidth: CGFloat, animated: Bool) {
     self.frame = frame
-    self.initialLayerColor = initialLayerColor
     self.animatedLayerColor = animatedLayerColor
     self.strokeWidth = strokeWidth
     self.animated = animated
   }
-  
-  private func configureView() {
-    backgroundColor = .clear
-    layer.addSublayer(initialLayer)
-  }
-  
+
   //Perform the animation
   func animate(duration: TimeInterval = 0.6, completion: @escaping (Bool) -> Void) {
     guard let animatedLayer = animatedLayer else { return }
@@ -109,13 +88,13 @@ class CheckmarkView: UIView, CAAnimationDelegate {
     let scale = frame.width / 100
     let centerX = frame.size.width / 2
     let centerY = frame.size.height / 2
-    let sixOclock = CGFloat(Double.pi / 2)
+    let startEndAngle = CGFloat(Double.pi / 2)
     
     let checkmarkPath = UIBezierPath(
       arcCenter: CGPoint(x: centerX, y: centerY),
       radius: centerX,
-      startAngle: sixOclock,
-      endAngle: sixOclock,
+      startAngle: startEndAngle,
+      endAngle: startEndAngle,
       clockwise: true
     )
     checkmarkPath.move(
