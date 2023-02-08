@@ -205,40 +205,12 @@ extension CartViewController {
       let collectionType = getShoppingCartItemType(from: item)
       if
         let collection = getProductCollection(from: productCollections, of: collectionType),
-        let product = getProductInShoppingCart(productID, from: collection)
+        let product = getProductFromShoppingCartIn(in: collection, for: productID)
       {
         itemsInShoppingCart.append(product)
       }
       
     }
-  }
-  
-  //Get the product array of the correct collection type
-  func getProductCollection(from array: [ProductCollection], of type: String) -> ProductCollection? {
-    for collection in array {
-      if collection.type == type {
-        return collection
-      }
-    }
-    return nil
-  }
-  
-  //Find the product in the Shopping Cart
-  func getProductInShoppingCart(_ productID: String, from collection: ProductCollection) -> Product? {
-    
-    //Get the products array from the collection type
-    let productsArray = collection.products
-    
-    //Loop throught the array to find the product in the ShoppingCart
-    for product in productsArray {
-      if product.id == productID {
-        
-        //If you find it, add it to the itemsInShoppingCart array
-        return product
-      }
-    }
-    
-    return nil
   }
   
 }
@@ -259,8 +231,8 @@ extension CartViewController {
     //Remove product from Shopping Cart in TabBarController
     cartViewControllerDelegate?.didTapRemoveItemFromCartController(itemCount, from: index)
     
-    //Update the total price label
-    updateTotalPriceLabel(from: index, and: -itemCount)
+    //Update the total price
+    updateTotalPrice(for: itemsInShoppingCart[index], and: -itemCount)
     
     //Remove item from the ShoppingCart arrays
     updateRemovedItemsInShoppingCartArrays(for: index)
@@ -289,19 +261,19 @@ extension CartViewController {
     let currentItemIdDictionary = itemsInShoppingCartIDs[index]
     
     //Get how many of the same product are in the Shopping Cart
-    let itemCount = getProductCountInShoppingCart(from: currentItemIdDictionary)
+    let oldItemCount = getProductCountInShoppingCart(from: currentItemIdDictionary)
     
     //Update the product's count on the ShoppingCart array
     updateProductCountInShoppingCart(newItemCount, on: index)
     
     //Delta between old and new product count values
-    let newCount = newItemCount - itemCount
+    let delta =  newItemCount - oldItemCount
     
     //Make sure the product quantity has changed
-    if newCount > 0 {
+    if delta != 0 {
       //Update the Cart's TabBar Item badge
       cartViewControllerDelegate?.didUpdateItemQuantityFromCartController(
-        newCount,
+        delta,
         with: itemsInShoppingCartIDs
       )
       
@@ -309,7 +281,7 @@ extension CartViewController {
       updateShoppingCartArrayInUserDefaults()
       
       //Update the total price label
-      updateTotalPriceLabel(from: index, and: newCount)
+      updateTotalPrice(for: itemsInShoppingCart[index], and: delta)
       
       shoppingCartTableView.reloadData()
     }
@@ -333,21 +305,24 @@ extension CartViewController {
   }
   
   //Update the total price
-  func updateTotalPrice(from productIndex: Int, and itemCount: Int) -> String {
-
-    let currentProduct = itemsInShoppingCart[productIndex]
-    let currency = currentProduct.price.currency
-    let price = currentProduct.price.value
+  func updateTotalPrice(for product: Product, and itemCount: Int) {
+    let newTotalPrice = calculatePriceChange(for: product, and: itemCount)
+    updateTheShoppingCartTotal(with: newTotalPrice)
+    updateTotalPriceLabel(for: product, and: itemCount)
+  }
+  
+  //Return new total price
+  func calculatePriceChange(for product: Product, and itemCount: Int) -> Double {
+    let price = product.price.value
     let totalPrice = price.byItemCount(itemCount)
-    updateTheShoppingCartTotal(with: totalPrice)
-    
-    return getShoppingCartTotal().toCurrencyFormat(in: currency)
+    return totalPrice
   }
   
   //Update the total price label
-  func updateTotalPriceLabel(from productIndex: Int, and itemCount: Int) {
-    let newPrice = updateTotalPrice(from: productIndex, and: itemCount)
-    totalShoppingAmountLabel.text = newPrice
+  func updateTotalPriceLabel(for product: Product, and itemCount: Int) {
+    let currency = product.price.currency
+    let newPriceString = getShoppingCartTotal().toCurrencyFormat(in: currency)
+    totalShoppingAmountLabel.text = newPriceString
   }
   
   //User changed the product quantity in PickerView
