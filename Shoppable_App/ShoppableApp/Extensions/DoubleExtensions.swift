@@ -5,12 +5,17 @@
 //  Created on 2/2/23.
 //
 
+
 import Foundation
+
 
 extension Double {
   
-  //Format a double to a currency format
-  func toCurrencyFormat(in currency: String) -> String {
+  // MARK: - Double to Currency String
+  
+  // Format a double to a currency format
+  func toCurrencyFormat() -> String {
+    let currency = Locale.current.currency?.identifier
     let formatter = NumberFormatter()
     formatter.numberStyle = .currency
     formatter.currencyCode = currency
@@ -18,7 +23,10 @@ extension Double {
     return formatter.string(from: NSNumber(value: self))!
   }
   
-  //Multiply the price by the product count
+  
+  // MARK: - Multiply Double by Int
+  
+  // Multiply the price by the product count
   func byItemCount(_ count: Int) -> Double {
     return self * Double(count)
   }

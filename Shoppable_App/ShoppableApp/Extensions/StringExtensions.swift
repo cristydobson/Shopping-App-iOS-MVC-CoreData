@@ -5,12 +5,16 @@
 //  Created on 2/2/23.
 //
 
-import Foundation
+
 import UIKit
+
 
 extension String {
   
-  //Add style to a currency string
+  
+  // MARK: - Currency String Style
+  
+  // Add style to a currency string
   func toCurrencyAttributedString(with fontSize: CGFloat) -> NSMutableAttributedString {
     
     let attributedPriceString = NSMutableAttributedString(string: self)
@@ -20,7 +24,7 @@ extension String {
       range: NSRange(location: 0, length: self.count)
     )
     
-    //Prefix & Postfix
+    // Prefix & Postfix
     let regexArr = [#"^\W?"#, #"(\.|\,)\d{2}(\s\w+)?$"#]
     let regexFonts = [
       UIFont.systemFont(ofSize: fontSize/1.7, weight: .bold),
@@ -56,8 +60,10 @@ extension String {
     return attributedPriceString
   }
   
-  //Add style to any string
-  func toStyledString(with fontSize: CGFloat, and fontWeight: UIFont.Weight) -> NSAttributedString {
+  
+  // MARK: - Add Style to any String
+  
+  func toStyleString(with fontSize: CGFloat, and fontWeight: UIFont.Weight) -> NSAttributedString {
     
     let attributedString = NSMutableAttributedString(string: self)
     let attributedStringKey = [
@@ -70,6 +76,9 @@ extension String {
     
     return attributedString
   }
+  
+  
+  // MARK: - Capitalize first letter
   
   func capitalizingFirstLetter() -> String {
     return prefix(1).capitalized + dropFirst()

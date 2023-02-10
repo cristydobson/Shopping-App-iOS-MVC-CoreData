@@ -9,12 +9,13 @@ import Foundation
 
 
 // MARK: - Product Collection Types enum
+
 // Product Collection Types
 enum CollectionType: String, CaseIterable {
   case couch
   case chair
   
-  //Returns the title to use in ProductCatalogViewController
+  // Returns the title to use in ProductCatalogViewController
   var productTypeTitle: String {
     switch self {
       case .couch:
@@ -28,6 +29,7 @@ enum CollectionType: String, CaseIterable {
 
 
 // MARK: - Get Product Collection
+
 // Get the product array of the correct collection type
 func getProductCollection(from array: [ProductCollection], of type: String) -> ProductCollection? {
   for collection in array {
@@ -40,6 +42,7 @@ func getProductCollection(from array: [ProductCollection], of type: String) -> P
 
 
 // MARK: - Get localized Product Collection type
+
 // Get the product collection type localized name
 func getProductCollectionTypeLocalizedName(from index: Int) -> String {
   
@@ -55,17 +58,18 @@ func getProductCollectionTypeLocalizedName(from index: Int) -> String {
 
 
 // MARK: - Find product from the shopping cart in a product collection
+
 // Find the product from the Shopping Cart
 func getProductFromShoppingCartIn(in collection: ProductCollection, for productID: String) -> Product? {
   
-  //Get the products array from the collection type
+  // Get the products array from the collection type
   let productsArray = collection.products
   
-  //Loop throught the array to find the product in the ShoppingCart
+  // Loop throught the array to find the product in the ShoppingCart
   for product in productsArray {
     if product.id == productID {
       
-      //If you find it, add it to the itemsInShoppingCart array
+      // If you find it, add it to the itemsInShoppingCart array
       return product
     }
   }

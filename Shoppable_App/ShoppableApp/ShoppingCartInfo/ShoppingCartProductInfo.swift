@@ -9,6 +9,7 @@ import Foundation
 
 
 // MARK: - Shopping Cart Keys enum
+
 /*
  Keys used to store in UserDefaults the IDs of the products
  in the Shopping Cart
@@ -21,6 +22,7 @@ enum UserDefaultsKeys: String {
 
 
 // MARK: - Item ID ******
+
 // Get the Shopping Cart item ID
 func getShoppingCartItemID(from product: ProductDictionary) -> String {
   if let id = product[UserDefaultsKeys.id.rawValue] as? String {
@@ -31,6 +33,7 @@ func getShoppingCartItemID(from product: ProductDictionary) -> String {
 
 
 // MARK: - Item Type ******
+
 // Get the Shopping Cart item type
 func getShoppingCartItemType(from product: ProductDictionary) -> String {
   if let type = product[UserDefaultsKeys.type.rawValue] as? String {
@@ -40,9 +43,10 @@ func getShoppingCartItemType(from product: ProductDictionary) -> String {
 }
 
 
-// MARK: - Item Count in Shopping Cart ******
+// MARK: - Single Item Count in Shopping Cart ******
+
 // Get the product count in the Shopping Cart
-func getProductCountInShoppingCart(from currentProduct: ProductDictionary) -> Int {
+func getSingleProductCountInShoppingCart(from currentProduct: ProductDictionary) -> Int {
   if let productCount = currentProduct[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int {
     return productCount
   }

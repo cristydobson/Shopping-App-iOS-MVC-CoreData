@@ -12,6 +12,7 @@ import Foundation
 
 
 // MARK: - Product Description ******
+
 // Create the description string of a product
 func createDescriptionString(for product: Product) -> String {
   
@@ -43,6 +44,7 @@ func createDescriptionString(for product: Product) -> String {
 
 
 // MARK: - Product ImageURL ******
+
 // Can create the imageURL to load the image
 func canCreateImageUrl(from product: Product) -> URL? {
   if

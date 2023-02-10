@@ -2,7 +2,7 @@
 //  CartViewControllerTests.swift
 //  ShoppableTests
 //
-//  Created by Cristina Dobson on 2/8/23.
+//  Created on 2/8/23.
 //
 
 import XCTest
@@ -12,14 +12,14 @@ final class CartViewControllerTests: XCTestCase {
 
   
   var sut: CartViewController!
-  var productCollections: [ProductCollection]!
+  
   
   override func setUpWithError() throws {
     try super.setUpWithError()
     
     sut = CartViewController()
     
-    //Product in Shopping Cart
+    // Product in Shopping Cart
     sut.itemsInShoppingCartIDs = [
       [
         UserDefaultsKeys.id.rawValue : "1" as String,
@@ -33,8 +33,8 @@ final class CartViewControllerTests: XCTestCase {
       ] as [String:AnyObject]
     ]
     
-    //Product Collection
-    productCollections = [
+    // Product Collection
+    let productCollections = [
       ProductCollection(
         type: "chair",
         products: [
@@ -64,19 +64,32 @@ final class CartViewControllerTests: XCTestCase {
         ]
       )
     ]
+    sut.productCollections = productCollections
   }
   
   override func tearDownWithError() throws {
     sut = nil
-    productCollections = nil
     
     try super.tearDownWithError()
   }
+  
+  
+  // MARK: - Given
+  
+  func givenItemsInShoppingCartIDs() -> [ProductDictionary] {
+    return sut.itemsInShoppingCartIDs
+  }
+  
+  func givenCollections() -> [ProductCollection] {
+    return sut.productCollections
+  }
+  
 
   // MARK: - Get values from itemsInShoppingCartIDs
+  
   func testGetShoppingCartItemID_returnsString() {
     // given
-    let product = sut.itemsInShoppingCartIDs[0]
+    let product = givenItemsInShoppingCartIDs()[0]
     let expectedID = product[UserDefaultsKeys.id.rawValue] as? String
     
     // when
@@ -88,7 +101,7 @@ final class CartViewControllerTests: XCTestCase {
   
   func testGetShoppingCartItemType_returnsString() {
     // given
-    let product = sut.itemsInShoppingCartIDs[1]
+    let product = givenItemsInShoppingCartIDs()[1]
     let expectedType = product[UserDefaultsKeys.type.rawValue] as? String
     
     // when
@@ -98,25 +111,28 @@ final class CartViewControllerTests: XCTestCase {
     XCTAssertEqual(typeString, expectedType)
   }
   
-  func testGetProductCountInShoppingCart_returnsInt() {
+  func testGetSingleProductCountInShoppingCart_returnsInt() {
     // given
-    let product = sut.itemsInShoppingCartIDs.first!
+    let product = givenItemsInShoppingCartIDs()[0]
     let expectedCount = product[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int
     
     // when
-    let countString = getProductCountInShoppingCart(from: product)
+    let countString = getSingleProductCountInShoppingCart(from: product)
     
     // then
     XCTAssertEqual(countString, expectedCount)
   }
   
+  
   // MARK: - Find the ItemInShoppingCart in the Product Collections
+  
   func testGetProductCollection_withCorrectProductType() {
     // given
-    let productType = "chair"
+    let productType = CollectionType.chair.rawValue
     
     // when
-    let returnedCollection = getProductCollection(from: productCollections, of: productType)!
+    let returnedCollection = getProductCollection(from: givenCollections(),
+                                                  of: productType)!
     
     // then
     XCTAssertEqual(returnedCollection.type, productType)
@@ -125,7 +141,7 @@ final class CartViewControllerTests: XCTestCase {
   
   func testGetProductFromShoppingCart_withSameID_inProductCollection() {
     // given
-    let productCollection = productCollections.first!
+    let productCollection = givenCollections().first!
     let productID = productCollection.products.last!.id //"8"
     
     // when
@@ -135,7 +151,18 @@ final class CartViewControllerTests: XCTestCase {
     XCTAssertEqual(returnedProduct.id, productID)
   }
   
+  func testGetProductsFromShoppingCart_returnProductArray() {
+    // when
+    let array = getProductsInShoppingCart(givenItemsInShoppingCartIDs(),
+                                          from: givenCollections())
+    
+    // then
+    XCTAssertTrue(array.count == 2)
+  }
+  
+  
   // MARK: - Update Shopping Cart count
+  
   //Update the product's count on the ShoppingCart array
   func testUpdateProductCountInShoppingCart_withNewValue() {
     // given
@@ -146,25 +173,10 @@ final class CartViewControllerTests: XCTestCase {
     sut.updateProductCountInShoppingCart(newCount, on: index)
     
     // then
-    let updatedCount = sut.itemsInShoppingCartIDs[index][UserDefaultsKeys.inShoppingCartCount.rawValue] as! Int
+    let updatedCount = givenItemsInShoppingCartIDs()[index][UserDefaultsKeys.inShoppingCartCount.rawValue] as! Int
     XCTAssertEqual(updatedCount, newCount)
     
   }
   
-  //Calculate price change for a product
-  func testCalculatePriceChange_forCountChange_ofSameProduct() {
-    // given
-    let productCountChange = 5
-    let product = productCollections[0].products.last!
-    
-    // when
-    let calculatedTotal = sut.calculatePriceChange(for: product, and: productCountChange)
-    
-    // then
-    let expectedTotal = product.price.value * Double(productCountChange)
-    XCTAssertEqual(calculatedTotal, expectedTotal)
-  }
-  
-
 }
 

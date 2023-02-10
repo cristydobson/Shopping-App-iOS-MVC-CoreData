@@ -12,6 +12,7 @@ import Foundation
 
 
 // MARK: - Update the Shopping Cart's total price ******
+
 // Update the Shopping Cart total in UserDefaults
 func updateTheShoppingCartTotal(with amount: Double) {
   let shoppingCartTotalKey = "shoppingCartTotal"
@@ -35,6 +36,7 @@ func updateTheShoppingCartTotal(with amount: Double) {
 
 
 // MARK: - Get Shopping Cart total price ******
+
 // Get the Shopping Cart total from UserDefaults
 func getShoppingCartTotal() -> Double {
   let shoppingCartTotalKey = "shoppingCartTotal"

@@ -6,30 +6,37 @@
   
 */
 
-//TabBarController
+
+// TabBarController
 "Collections" = "Colecciones";
 "Cart" = "Carrito";
 
-//ProductOverviewViewController
+
+// ProductOverviewViewController
 "Couches" = "Sofás";
 "Chairs" = "Sillas";
 
-//ProductCatalogViewController
+
+// ProductCatalogViewController
 "seats" = "asientos";
 
-//ProductPageViewController
+
+// ProductPageViewController
 "Add to Shopping Cart" = "Añadir al Carrito";
 "Product" = "Producto";
 
-//CartViewController
+
+// CartViewController
 "Shopping Cart" = "Carrito de Compras";
 "Remove Item" = "Remover Artículo";
 
-//Buttons
+
+// Buttons
 "Done" = "Listo";
 "Cancel" = "Cancelar";
 
-//Colors
+
+// Colors
 "beige" = "beige";
 "gray" = "gris";
 "black" = "negro";
@@ -39,7 +46,8 @@
 "dark blue" = "azul oscuro";
 "wood" = "madera";
 
-//Materials
+
+// Materials
 "wood with cover" = "madera con cubierta";
 "plastic" = "plastico";
 "wood and metal" = "madera y metal";

@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 
+// MARK: - CollectionView setup
+
 // CollectionView delegates and cell setup
 func setupCollectionView(_ cellID: String, for collectionView: UICollectionView, in viewController: UIViewController) {
   
@@ -22,7 +24,8 @@ func setupCollectionView(_ cellID: String, for collectionView: UICollectionView,
 }
 
 
-// TableView cell setup
+// MARK: - TableView cell setup
+
 func setupTableView(_ cellID: String, for tableView: UITableView, in viewController: UIViewController) {
 
   let cellNib = UINib(nibName: cellID, bundle: nil)
@@ -32,6 +35,8 @@ func setupTableView(_ cellID: String, for tableView: UITableView, in viewControl
   )
 }
 
+
+// MARK: - Highlight a collection cell on tap
 
 // Highlight Any Cell on tap
 func highlightCellOnTap(for cell: UIView) {

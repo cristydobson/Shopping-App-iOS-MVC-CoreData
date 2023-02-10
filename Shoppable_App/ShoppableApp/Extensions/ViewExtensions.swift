@@ -5,12 +5,14 @@
 //  Created on 2/2/23.
 //
 
-import Foundation
+
 import UIKit
+
 
 extension UIView {
   
-  //Show a background Blur view
+  // MARK: - Animate-in Blur View
+  
   func showAnimatedAsBlur(withDuration duration: TimeInterval, delay: TimeInterval) {
     if self.isHidden {
       self.isHidden = false
@@ -27,27 +29,35 @@ extension UIView {
     }
   }
   
-  //Hide a background Blur view
+  
+  // MARK: - Animate-out Blur View
+  
   func hideAnimatedAsBlur(withDuration duration: TimeInterval, delay: TimeInterval) {
+    
     if !self.isHidden {
-      UIView.animate(
-        withDuration: duration,
-        delay: 0,
-        options: .curveEaseOut,
-        animations: {
-          self.alpha = 0
-        })
-      { finished in
-        if finished {
-          self.isHidden = true
-          self.isUserInteractionEnabled = false
-        }
-      }
+      
+      UIView.animate(withDuration: duration,
+                     delay: 0,
+                     options: .curveEaseOut,
+                     animations: {
+                        self.alpha = 0
+                     })
+                     { finished in //Completion handler
+        
+                       if finished {
+                         self.isHidden = true
+                         self.isUserInteractionEnabled = false
+                       }
+                     }
     }
   }
   
-  //Add a drop down shadow to a view
+  
+  // MARK: - Drop-down Shadow
+  
+  // Add a drop down shadow to a view
   func addDropShadow(opacity: Float, radius: CGFloat, offset: CGSize, lightColor: UIColor, darkColor: UIColor) {
+    
     self.layer.masksToBounds = false
     self.layer.shadowOpacity = opacity
     self.layer.shadowRadius = radius
@@ -57,11 +67,17 @@ extension UIView {
       dark: darkColor).cgColor
   }
   
-  //Customize the border of a view
+  
+  // MARK: - Add Border Style
+  
+  // Customize the border of a view
   func addBorderStyle(borderWidth: CGFloat, borderColor: UIColor) {
     layer.borderWidth = borderWidth
     layer.borderColor = borderColor.cgColor
   }
+  
+  
+  // MARK: - Add Corner Radius
   
   //Add corner radius to a view
   func addCornerRadius(_ cornerRadius: CGFloat) {
