@@ -163,8 +163,7 @@ extension TabBarController {
   
   // Load the data from the products.json file
   func loadJsonData() {
-    let jsonLoader = JsonLoader()
-    let products = jsonLoader.returnProductCollectionTypeArray(from: "products")
+    let products = JsonLoader.returnProductCollectionTypeArray(from: "products")
     productCollections = products
   }
   
