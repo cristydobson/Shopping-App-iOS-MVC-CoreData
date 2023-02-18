@@ -40,12 +40,12 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     let product = itemsInShoppingCart[index]
     
     // Add the name of the product
-    cell.productNameLabel.attributedText = getAttributedName(from: product,
+    cell.productNameLabel.attributedText = ProductAttributedStrings.getAttributedName(from: product,
                                                              withSize: 18)
     
     // Add the itemsInShoppingCart count
     let productInShoppingCartDict = itemsInShoppingCartIDs[index]
-    let inShoppingCartCount = getSingleProductCountInShoppingCart(from: productInShoppingCartDict)
+    let inShoppingCartCount = ShoppingCartProductInfo.getSingleProductCountInShoppingCart(from: productInShoppingCartDict)
     cell.changeQuantityButton.text = "\(inShoppingCartCount)"
     cell.itemCountInShoppingCart = inShoppingCartCount
     

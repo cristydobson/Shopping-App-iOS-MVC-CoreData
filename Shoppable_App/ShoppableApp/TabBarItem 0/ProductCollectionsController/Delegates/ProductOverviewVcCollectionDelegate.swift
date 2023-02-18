@@ -34,7 +34,7 @@ extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionV
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: productCollectionCellID, for: indexPath) as! ProductCollectionCell
     
     // Add the name of the product type
-    cell.collectionNameLabel.text = getProductCollectionTypeLocalizedName(from: indexPath.row)
+    cell.collectionNameLabel.text = ProductCollectionInfo.getProductCollectionTypeLocalizedName(from: indexPath.row)
     
     // Load the image of the product type from a URL
     if
@@ -83,7 +83,7 @@ extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionV
     let index = indexPath.row
     let productList = productCollections[index].products
     userTappedProductCollection = productList
-    userTappedProductCollectionName = getProductCollectionTypeLocalizedName(from: index)
+    userTappedProductCollectionName = ProductCollectionInfo.getProductCollectionTypeLocalizedName(from: index)
     
     // Go to ProductCatalogViewController
     performSegue(withIdentifier: productCatalogSegue, sender: self)

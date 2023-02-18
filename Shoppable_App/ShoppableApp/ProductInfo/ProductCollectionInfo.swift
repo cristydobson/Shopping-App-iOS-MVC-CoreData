@@ -27,55 +27,66 @@ enum CollectionType: String, CaseIterable {
 }
 
 
-
-// MARK: - Get Product Collection
-
-// Get the product array of the correct collection type
-func getProductCollection(from array: [ProductCollection], of type: String) -> ProductCollection? {
-  for collection in array {
-    if collection.type == type {
-      return collection
+struct ProductCollectionInfo {
+  
+  // MARK: - Get Product Collection
+  
+  // Get the product array of the correct collection type
+  static  func getProductCollection(from array: [ProductCollection], of type: String) -> ProductCollection? {
+    for collection in array {
+      if collection.type == type {
+        return collection
+      }
     }
-  }
-  return nil
-}
-
-
-// MARK: - Get localized Product Collection type
-
-// Get the product collection type localized name
-func getProductCollectionTypeLocalizedName(from index: Int) -> String {
-  
-  let collectionTypeCases = CollectionType.allCases
-  if index <= collectionTypeCases.count-1 {
-    let collectionName = collectionTypeCases[index].productTypeTitle
-    return NSLocalizedString(collectionName,
-                             comment: "Collection type")
+    return nil
   }
   
-  return ""
-}
-
-
-// MARK: - Find product from the shopping cart in a product collection
-
-// Find the product from the Shopping Cart
-func getProductFromShoppingCartIn(in collection: ProductCollection, for productID: String) -> Product? {
+  // MARK: - Get localized Product Collection type
   
-  // Get the products array from the collection type
-  let productsArray = collection.products
-  
-  // Loop throught the array to find the product in the ShoppingCart
-  for product in productsArray {
-    if product.id == productID {
-      
-      // If you find it, add it to the itemsInShoppingCart array
-      return product
+  // Get the product collection type localized name
+  static  func getProductCollectionTypeLocalizedName(from index: Int) -> String {
+    
+    let collectionTypeCases = CollectionType.allCases
+    if index <= collectionTypeCases.count-1 {
+      let collectionName = collectionTypeCases[index].productTypeTitle
+      return NSLocalizedString(collectionName,
+                               comment: "Collection type")
     }
+    
+    return ""
   }
   
-  return nil
+  // MARK: - Find product from the shopping cart in a product collection
+  
+  // Find the product from the Shopping Cart
+  static  func getProductFromShoppingCartIn(in collection: ProductCollection, for productID: String) -> Product? {
+    
+    // Get the products array from the collection type
+    let productsArray = collection.products
+    
+    // Loop throught the array to find the product in the ShoppingCart
+    for product in productsArray {
+      if product.id == productID {
+        
+        // If you find it, add it to the itemsInShoppingCart array
+        return product
+      }
+    }
+    
+    return nil
+  }
+
+  
 }
+
+
+
+
+
+
+
+
+
 
 
 

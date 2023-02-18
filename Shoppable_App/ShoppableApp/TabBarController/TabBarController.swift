@@ -97,7 +97,7 @@ extension TabBarController {
   
   // Cart's TabBarItem badge on app launch
   func setupInitialCartTabBarItemBadge() {
-    let itemsInCartCount = getItemCountInShoppingCart(from: itemsInShoppingCartIDs)
+    let itemsInCartCount = ShoppingCartProducts.getItemCountInShoppingCart(from: itemsInShoppingCartIDs)
     itemsInShoppingCartCount = itemsInCartCount
     setupCartTabBarItemBadge(with: itemsInCartCount)
   }

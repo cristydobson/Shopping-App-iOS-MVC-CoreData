@@ -62,7 +62,7 @@ extension TabBarController: ProductOverviewViewControllerDelegate {
     
     // Update the total price in Shopping Cart in UserDefaults
     let price = product.price.value
-    updateTheShoppingCartTotal(with: price)
+    ShoppingCartTotalPrice.updateTheShoppingCartTotal(with: price)
     
   }
   
@@ -77,7 +77,7 @@ extension TabBarController: ProductOverviewViewControllerDelegate {
         forKey: UserDefaultsKeys.inShoppingCartCount.rawValue
       )
       
-      saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
+      ShoppingCartProducts.saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
     }
   }
   
@@ -92,6 +92,6 @@ extension TabBarController: ProductOverviewViewControllerDelegate {
     ]
     itemsInShoppingCartIDs.append(productIdDictionary)
     
-    saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
+    ShoppingCartProducts.saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
   }
 }

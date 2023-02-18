@@ -21,37 +21,46 @@ enum UserDefaultsKeys: String {
 }
 
 
-// MARK: - Item ID ******
-
-// Get the Shopping Cart item ID
-func getShoppingCartItemID(from product: ProductDictionary) -> String {
-  if let id = product[UserDefaultsKeys.id.rawValue] as? String {
-    return id
+struct ShoppingCartProductInfo {
+  
+  // MARK: - Item ID ******
+  
+  // Get the Shopping Cart item ID
+  static func getShoppingCartItemID(from product: ProductDictionary) -> String {
+    if let id = product[UserDefaultsKeys.id.rawValue] as? String {
+      return id
+    }
+    return ""
   }
-  return ""
+  
+  
+  // MARK: - Item Type ******
+  
+  // Get the Shopping Cart item type
+  static func getShoppingCartItemType(from product: ProductDictionary) -> String {
+    if let type = product[UserDefaultsKeys.type.rawValue] as? String {
+      return type
+    }
+    return ""
+  }
+  
+  // MARK: - Single Item Count in Shopping Cart ******
+  
+  // Get the product count in the Shopping Cart
+  static func getSingleProductCountInShoppingCart(from currentProduct: ProductDictionary) -> Int {
+    if let productCount = currentProduct[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int {
+      return productCount
+    }
+    return 0
+  }
+
+  
 }
 
 
-// MARK: - Item Type ******
-
-// Get the Shopping Cart item type
-func getShoppingCartItemType(from product: ProductDictionary) -> String {
-  if let type = product[UserDefaultsKeys.type.rawValue] as? String {
-    return type
-  }
-  return ""
-}
 
 
-// MARK: - Single Item Count in Shopping Cart ******
 
-// Get the product count in the Shopping Cart
-func getSingleProductCountInShoppingCart(from currentProduct: ProductDictionary) -> Int {
-  if let productCount = currentProduct[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int {
-    return productCount
-  }
-  return 0
-}
 
 
 

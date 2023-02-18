@@ -11,41 +11,48 @@
 import Foundation
 
 
-// MARK: - Update the Shopping Cart's total price ******
-
-// Update the Shopping Cart total in UserDefaults
-func updateTheShoppingCartTotal(with amount: Double) {
-  let shoppingCartTotalKey = "shoppingCartTotal"
+struct ShoppingCartTotalPrice {
   
-  if let shoppingCartTotal = UserDefaults.standard.object(forKey: shoppingCartTotalKey) as? Double {
+  // MARK: - Update the Shopping Cart's total price ******
+  
+  // Update the Shopping Cart total in UserDefaults
+  static func updateTheShoppingCartTotal(with amount: Double) {
+    let shoppingCartTotalKey = "shoppingCartTotal"
     
-    let newTotal = shoppingCartTotal + amount
-    let positiveTotal = newTotal > 0 ? newTotal : 0.0
-    UserDefaults.standard.set(
-      positiveTotal,
-      forKey: shoppingCartTotalKey
-    )
+    if let shoppingCartTotal = UserDefaults.standard.object(forKey: shoppingCartTotalKey) as? Double {
+      
+      let newTotal = shoppingCartTotal + amount
+      let positiveTotal = newTotal > 0 ? newTotal : 0.0
+      UserDefaults.standard.set(
+        positiveTotal,
+        forKey: shoppingCartTotalKey
+      )
+    }
+    else if amount > 0 {
+      UserDefaults.standard.set(
+        amount,
+        forKey: shoppingCartTotalKey
+      )
+    }
   }
-  else if amount > 0 {
-    UserDefaults.standard.set(
-      amount,
-      forKey: shoppingCartTotalKey
-    )
-  }
-}
 
-
-// MARK: - Get Shopping Cart total price ******
-
-// Get the Shopping Cart total from UserDefaults
-func getShoppingCartTotal() -> Double {
-  let shoppingCartTotalKey = "shoppingCartTotal"
+  // MARK: - Get Shopping Cart total price ******
   
-  if let shoppingCartTotal = UserDefaults.standard.object(forKey: shoppingCartTotalKey) as? Double {
-    return shoppingCartTotal
+  // Get the Shopping Cart total from UserDefaults
+  static func getShoppingCartTotal() -> Double {
+    let shoppingCartTotalKey = "shoppingCartTotal"
+    
+    if let shoppingCartTotal = UserDefaults.standard.object(forKey: shoppingCartTotalKey) as? Double {
+      return shoppingCartTotal
+    }
+    return 0.0
   }
-  return 0.0
+  
 }
+
+
+
+
 
 
 

@@ -37,15 +37,15 @@ extension ProductCatalogViewController: UICollectionViewDelegate, UICollectionVi
     let currentProduct = productList[indexPath.row]
     
     // Add the name of the product
-    cell.productNameLabel.attributedText = getAttributedName(from: currentProduct,
+    cell.productNameLabel.attributedText = ProductAttributedStrings.getAttributedName(from: currentProduct,
                                                              withSize: 16)
     
     // Add the description of the product
-    cell.productDescriptionLabel.attributedText = getAttributedDescription(from: currentProduct,
+    cell.productDescriptionLabel.attributedText = ProductAttributedStrings.getAttributedDescription(from: currentProduct,
                                                                            withSize: 16)
     
     // Add the price of the product
-    cell.productPriceLabel.attributedText = getAttributedPrice(from: currentProduct,
+    cell.productPriceLabel.attributedText = ProductAttributedStrings.getAttributedPrice(from: currentProduct,
                                                                withSize: 24)
     
     /*

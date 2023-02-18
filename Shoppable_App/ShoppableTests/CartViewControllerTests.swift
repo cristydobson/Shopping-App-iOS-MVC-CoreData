@@ -93,7 +93,7 @@ final class CartViewControllerTests: XCTestCase {
     let expectedID = product[UserDefaultsKeys.id.rawValue] as? String
     
     // when
-    let idString = getShoppingCartItemID(from: product)
+    let idString = ShoppingCartProductInfo.getShoppingCartItemID(from: product)
     
     // then
     XCTAssertEqual(idString, expectedID)
@@ -105,7 +105,7 @@ final class CartViewControllerTests: XCTestCase {
     let expectedType = product[UserDefaultsKeys.type.rawValue] as? String
     
     // when
-    let typeString = getShoppingCartItemType(from: product)
+    let typeString = ShoppingCartProductInfo.getShoppingCartItemType(from: product)
     
     // then
     XCTAssertEqual(typeString, expectedType)
@@ -117,7 +117,7 @@ final class CartViewControllerTests: XCTestCase {
     let expectedCount = product[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int
     
     // when
-    let countString = getSingleProductCountInShoppingCart(from: product)
+    let countString = ShoppingCartProductInfo.getSingleProductCountInShoppingCart(from: product)
     
     // then
     XCTAssertEqual(countString, expectedCount)
@@ -131,7 +131,7 @@ final class CartViewControllerTests: XCTestCase {
     let productType = CollectionType.chair.rawValue
     
     // when
-    let returnedCollection = getProductCollection(from: givenCollections(),
+    let returnedCollection = ProductCollectionInfo.getProductCollection(from: givenCollections(),
                                                   of: productType)!
     
     // then
@@ -145,7 +145,7 @@ final class CartViewControllerTests: XCTestCase {
     let productID = productCollection.products.last!.id //"8"
     
     // when
-    let returnedProduct = getProductFromShoppingCartIn(in: productCollection, for: productID)!
+    let returnedProduct = ProductCollectionInfo.getProductFromShoppingCartIn(in: productCollection, for: productID)!
     
     // then
     XCTAssertEqual(returnedProduct.id, productID)
@@ -153,7 +153,7 @@ final class CartViewControllerTests: XCTestCase {
   
   func testGetProductsFromShoppingCart_returnProductArray() {
     // when
-    let array = getProductsInShoppingCart(givenItemsInShoppingCartIDs(),
+    let array = ShoppingCartProducts.getProductsInShoppingCart(givenItemsInShoppingCartIDs(),
                                           from: givenCollections())
     
     // then

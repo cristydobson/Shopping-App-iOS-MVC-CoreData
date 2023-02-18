@@ -202,15 +202,15 @@ extension ProductPageViewController {
     if let productObj = productObject {
       
       // Add the name of the product
-      productNameLabel.attributedText = getAttributedName(from: productObj,
+      productNameLabel.attributedText = ProductAttributedStrings.getAttributedName(from: productObj,
                                                           withSize: 18)
       
       // Add the description of the product
-      productDescriptionLabel.attributedText = getAttributedDescription(from: productObj,
+      productDescriptionLabel.attributedText = ProductAttributedStrings.getAttributedDescription(from: productObj,
                                                                         withSize: 18)
       
       // Add the price of the product
-      productPriceLabel.attributedText = getAttributedPrice(from: productObj,
+      productPriceLabel.attributedText = ProductAttributedStrings.getAttributedPrice(from: productObj,
                                                             withSize: 34)
     }
   }
