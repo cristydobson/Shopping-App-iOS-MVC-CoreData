@@ -30,10 +30,10 @@ This app contains:
 * It handles Shopping Cart data storage in UserDefaults.
 
 <br>
-<hr>
-<br>
 
 <img src="Assets/Clips/Shopping_App_iOS.gif" width ="300">
+
+<br>
 
 
 ## TabBarItem 1 - View Controller Stack:
