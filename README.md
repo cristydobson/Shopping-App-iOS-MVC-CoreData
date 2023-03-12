@@ -1,6 +1,12 @@
 # (Swift 5, iOS 16): MVC, Notification Center, UIKit & XCTest
 
-### Shoppable App 
+<br>
+
+![Logo](Assets/Logo/Shopping_App_Logo.png)
+
+<br>
+
+### Shopping App 
 
 This app contains:
 
@@ -26,6 +32,9 @@ This app contains:
 <br>
 <hr>
 <br>
+
+<img src="Assets/Clips/Shopping_App_iOS.gif" width ="300">
+
 
 ## TabBarItem 1 - View Controller Stack:
 
