@@ -1,4 +1,4 @@
-# shoppable-app-project
+# (Swift 5, iOS 16): MVC, Notification Center, UIKit & XCTest
 
 ### Shoppable App 
 
@@ -12,6 +12,9 @@ This app contains:
 * XCTests 
 * Assets (App icon, buttons and 1 launchscreen image)
 
+<br>
+<hr>
+<br>
 
 ## Root Controller -> UITabBarController:
 
@@ -20,6 +23,9 @@ This app contains:
 * It handles getting the product objects from the JSON file to be used through out the app.
 * It handles Shopping Cart data storage in UserDefaults.
 
+<br>
+<hr>
+<br>
 
 ## TabBarItem 1 - View Controller Stack:
 
@@ -44,6 +50,9 @@ This app contains:
 * Displays the product's information inside a UIScrollView.
 * Can add the product to the Shopping Cart from the Add To Cart button.
 
+<br>
+<hr>
+<br>
 
 ## TabBarItem 2:
 
@@ -55,6 +64,9 @@ This app contains:
 * The user can remove each product from the Shopping Cart.
 * The total price of all the products in the Shopping Cart is always visible to the user at the bottom of the screen.
 
+<br>
+<hr>
+<br>
 
 # Other features:
 
@@ -62,10 +74,6 @@ This app contains:
 * Language localization setup (Spanish included as a starter).
 * Currency formatter to Locale for Strings.
 
-
-# Sample User Release Note:
-
-* Read the Release_Note.docx file
 
 
 
