@@ -10,7 +10,6 @@
 protocol ProductCatalogViewControllerDelegate: AnyObject {
   
   func didTapAddToCartButtonFromProductCatalogController(
-    for product: Product
-  )
+    for product: Product)
   
 }

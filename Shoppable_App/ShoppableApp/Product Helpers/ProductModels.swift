@@ -1,21 +1,21 @@
 //
-//  ProductStructs.swift
+//  ProductModels.swift
 //  ShoppableApp
 //
 //  Created on 2/10/23.
 //
 
 
-// MARK: - Product Array ******
+// MARK: - Product Array
 
-struct ProductInformation: Decodable {
+struct ProductInformation: Codable {
   let products: [Product]
 }
 
 
-// MARK: - Product Object ******
+// MARK: - Product Object
 
-struct Product: Decodable {
+struct Product: Codable {
   let id: String
   let name: String
   let price: Price
@@ -25,24 +25,24 @@ struct Product: Decodable {
 }
 
 
-// MARK: - Product's Price ******
+// MARK: - Product's Price
 
-struct Price: Decodable {
+struct Price: Codable {
   let value: Double
   let currency: String
 }
 
 
-// MARK: - Product's Info ******
+// MARK: - Product's Info
 
-struct Info: Decodable {
+struct Info: Codable {
   let material: String?
   let numberOfSeats: Int?
   let color: String?
 }
 
 
-// MARK: - Product Collection ******
+// MARK: - Product Collection 
 
 struct ProductCollection {
   let type: String

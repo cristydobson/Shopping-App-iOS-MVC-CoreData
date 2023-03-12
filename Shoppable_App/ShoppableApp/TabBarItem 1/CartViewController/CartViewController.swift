@@ -14,7 +14,7 @@ import UserNotifications
 class CartViewController: UIViewController {
 
   
-  // MARK: - Properties ******
+  // MARK: - Properties
   
   // Delegate
   weak var cartViewControllerDelegate: CartViewControllerDelegate?
@@ -50,7 +50,7 @@ class CartViewController: UIViewController {
   var changedQuantityOnCellIndexPath: IndexPath?
   
   
-  // MARK: - View Controller Life Cycle ******
+  // MARK: - View Controller's Life Cycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -59,16 +59,19 @@ class CartViewController: UIViewController {
     setupNavigationBar()
     
     // Add a Tap Gesture to BlurView to dismiss PickerView
-    setupViewTapGesture(for: blurView,
-                          withAction: #selector(didCancelPickerView))
+    setupViewTapGesture(
+      for: blurView,
+      withAction: #selector(didCancelPickerView))
     
     // Get Product Objects from the IDs stored in UserDefaults
-    itemsInShoppingCart = ShoppingCartProducts.getProductsInShoppingCart(itemsInShoppingCartIDs,
-                                                    from: productCollections)
+    itemsInShoppingCart = ShoppingCartProductHelper
+      .getProductsInShoppingCart(itemsInShoppingCartIDs,
+                                 from: productCollections)
     
     // Setup Shopping Cart TableView
     setupProductsTableViewInsets()
-    setupTableView(shoppingCartCellID, for: shoppingCartTableView, in: self)
+    ObjectCollectionHelper.setupTableView(
+      shoppingCartCellID, for: shoppingCartTableView, in: self)
 
     // Shopping Cart total price Labels
     setupTotalPriceTitleLabel()
@@ -88,14 +91,15 @@ class CartViewController: UIViewController {
     if reloadShoppingTableView {
       reloadShoppingTableView = false
       setupTotalPriceLabel()
-      itemsInShoppingCart = ShoppingCartProducts.getProductsInShoppingCart(itemsInShoppingCartIDs,
-                                                      from: productCollections)
+      itemsInShoppingCart = ShoppingCartProductHelper
+        .getProductsInShoppingCart(itemsInShoppingCartIDs,
+                                   from: productCollections)
       shoppingCartTableView.reloadData()
     }
   }
   
   
-  // MARK: - View transition ******
+  // MARK: - View transition
   
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
@@ -112,29 +116,31 @@ class CartViewController: UIViewController {
 }
 
 
-// MARK: - Setup UI ******
+// MARK: - Setup UI 
 extension CartViewController {
   
   func setupNavigationBar() {
-    title = NSLocalizedString("Shopping Cart",
-                              comment: "Cart View Controller title")
+    title = NSLocalizedString(
+      "Shopping Cart",
+      comment: "Cart View Controller title")
   }
   
   func setupProductsTableViewInsets() {
     shoppingCartTableView.layoutMargins = zeroInsets
     shoppingCartTableView.separatorInset = zeroInsets
-    shoppingCartTableView.contentInset = UIEdgeInsets(top: 24, left: 0,
-                                                      bottom: 24, right: 0)
+    shoppingCartTableView.contentInset = UIEdgeInsets(
+      top: 24, left: 0, bottom: 24, right: 0)
   }
   
   func setupTotalPriceTitleLabel() {
-    totalTitleLabel.text = NSLocalizedString("Total",
-                                             comment: "Total price label title in CartViewController")
+    totalTitleLabel.text = NSLocalizedString(
+      "Total",
+      comment: "Total price label title in CartViewController")
   }
   
   func setupTotalPriceLabel() {
     // Get the total price from UserDefaults and display it
-    let totalPriceAmount = ShoppingCartTotalPrice.getShoppingCartTotal()
+    let totalPriceAmount = ShoppingCartTotalPriceHelper.getShoppingCartTotal()
     totalShoppingAmountLabel.text = totalPriceAmount.toCurrencyFormat()
   }
   
@@ -148,15 +154,13 @@ extension CartViewController {
 }
 
 
-// MARK: - Add Tap Gesture to BlurView ******
+// MARK: - Add Tap Gesture to BlurView
 extension CartViewController {
   
   // Add a Tap Gesture to a view
   func setupViewTapGesture(for aView: UIView, withAction action: Selector?) {
     let blurViewTap = UITapGestureRecognizer(
-      target: self,
-      action: action
-    )
+      target: self, action: action)
     blurViewTap.cancelsTouchesInView = false
     aView.addGestureRecognizer(blurViewTap)
   }
@@ -169,7 +173,7 @@ extension CartViewController {
 }
 
 
-// MARK: - Remove products from the Shopping Cart ******
+// MARK: - Remove products from the Shopping Cart
 extension CartViewController {
   
   // Remove a product from the Shopping Cart
@@ -179,10 +183,12 @@ extension CartViewController {
     let currentItemIdDictionary = itemsInShoppingCartIDs[index]
     
     // Get how many of the same product are in the Shopping Cart
-    let itemCount = ShoppingCartProductInfo.getSingleProductCountInShoppingCart(from: currentItemIdDictionary)
+    let itemCount = ShoppingCartProductInfoHelper
+      .getSingleProductCountInShoppingCart(from: currentItemIdDictionary)
     
     // Remove product from Shopping Cart in TabBarController
-    cartViewControllerDelegate?.didTapRemoveItemFromCartController(itemCount, from: index)
+    cartViewControllerDelegate?
+      .didTapRemoveItemFromCartController(itemCount, from: index)
 
     // Update the total price
     updateTotalPrice(for: itemsInShoppingCart[index], and: -itemCount)
@@ -202,13 +208,14 @@ extension CartViewController {
     
     itemsInShoppingCartIDs.remove(at: index)
     itemsInShoppingCart.remove(at: index)
-    ShoppingCartProducts.saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
+    ShoppingCartProductHelper
+      .saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
   }
   
 }
 
 
-// MARK: - Update Shopping Cart product count ******
+// MARK: - Update Shopping Cart product count
 extension CartViewController {
   
   // Update the product count in the Shopping Cart
@@ -217,7 +224,8 @@ extension CartViewController {
     let currentItemIdDictionary = itemsInShoppingCartIDs[index]
     
     // Get how many of the same product are in the Shopping Cart
-    let oldItemCount = ShoppingCartProductInfo.getSingleProductCountInShoppingCart(from: currentItemIdDictionary)
+    let oldItemCount = ShoppingCartProductInfoHelper
+      .getSingleProductCountInShoppingCart(from: currentItemIdDictionary)
     
     // Delta between old and new product count values
     let delta =  newItemCount - oldItemCount
@@ -232,16 +240,15 @@ extension CartViewController {
   // User did update Shopping Cart products
   func updateShoppingCart(with newCount: Int, delta: Int, on index: Int) {
     // Update the Cart's TabBar Item badge
-    cartViewControllerDelegate?.didUpdateItemQuantityFromCartController(
-      delta,
-      with: itemsInShoppingCartIDs
-    )
+    cartViewControllerDelegate?
+      .didUpdateItemQuantityFromCartController(delta, with: itemsInShoppingCartIDs)
     
     // Update the product's count on the ShoppingCart array
     updateProductCountInShoppingCart(newCount, on: index)
     
     // Update the Shopping Cart array in UserDefaults
-    ShoppingCartProducts.saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
+    ShoppingCartProductHelper
+      .saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
     
     // Update the total product price
     updateTotalPrice(for: itemsInShoppingCart[index], and: delta)
@@ -263,7 +270,8 @@ extension CartViewController {
   // Update the total product price
   func updateTotalPrice(for product: Product, and itemCount: Int) {
     let newTotalPrice = product.price.value.byItemCount(itemCount)
-    ShoppingCartTotalPrice.updateTheShoppingCartTotal(with: newTotalPrice)
+    ShoppingCartTotalPriceHelper
+      .updateTheShoppingCartTotal(with: newTotalPrice)
   }
   
 }

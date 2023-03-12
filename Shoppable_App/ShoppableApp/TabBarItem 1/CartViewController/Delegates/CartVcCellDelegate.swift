@@ -5,6 +5,7 @@
 //  Created on 2/10/23.
 //
 
+
 import UIKit
 
 
@@ -48,10 +49,7 @@ extension CartViewController: CartProductCellDelegate {
     // Show the product count in the PickerView
     if let cellValue = Int(cell.changeQuantityButton.text!) {
       quantityPickerView?.selectRow(
-        cellValue-1,
-        inComponent: 0,
-        animated: false
-      )
+        cellValue-1, inComponent: 0, animated: false)
     }
   }
   
@@ -63,6 +61,7 @@ extension CartViewController: CartProductCellDelegate {
    changeQuantityButton textfield
    */
   func addPickerViewToChangeQuantityButton(for cell: CartProductCell) {
+    
     if quantityPickerView == nil { setupQuantityPickerView() }
     cell.changeQuantityButton.inputView = quantityPickerView
     cell.changeQuantityButton.inputAccessoryView = quantityPickerView?.pickerToolBar

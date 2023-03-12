@@ -12,7 +12,8 @@ import UIKit
 
 class ProductOverviewViewController: UIViewController {
 
-  // MARK: - Properties ******
+  
+  // MARK: - Properties
   
   var screenTitle = ""
   
@@ -35,7 +36,7 @@ class ProductOverviewViewController: UIViewController {
   var imageLoader: ImageDownloader?
   
   
-  // MARK: - View Controller's Life Cycle ******
+  // MARK: - View Controller's Life Cycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -44,11 +45,13 @@ class ProductOverviewViewController: UIViewController {
     setupNavigationBar()
 
     // Product Collections CollectionView setup
-    setupCollectionView(productCollectionCellID, for: productCollectionsList, in: self)
+    ObjectCollectionHelper.setupCollectionView(
+      productCollectionCellID,
+      for: productCollectionsList, in: self)
   }
   
   
-  // MARK: - View transition ******
+  // MARK: - View transition
   
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
@@ -65,7 +68,7 @@ class ProductOverviewViewController: UIViewController {
   }
    
   
-  // MARK: - Navigation ******
+  // MARK: - Navigation
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     
@@ -89,8 +92,9 @@ class ProductOverviewViewController: UIViewController {
 extension ProductOverviewViewController {
   
   func setupNavigationBar() {
-    screenTitle = NSLocalizedString("Collections",
-                                    comment: "ProductOverviewViewController title")
+    screenTitle = NSLocalizedString(
+      "Collections",
+      comment: "ProductOverviewViewController title")
     title = screenTitle
   }
   

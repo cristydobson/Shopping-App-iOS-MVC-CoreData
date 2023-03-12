@@ -1,5 +1,5 @@
 /*
- ShoppingCartTotalPrice.swift
+ ShoppingCartTotalPriceHelper.swift
  ShoppableApp
  
  Created on 1/23/23.
@@ -8,40 +8,44 @@
  stored in UserDefaults
  */
 
+
 import Foundation
 
 
-struct ShoppingCartTotalPrice {
+struct ShoppingCartTotalPriceHelper {
   
-  // MARK: - Update the Shopping Cart's total price ******
+  
+  // MARK: - Update the Shopping Cart's total price
   
   // Update the Shopping Cart total in UserDefaults
   static func updateTheShoppingCartTotal(with amount: Double) {
     let shoppingCartTotalKey = "shoppingCartTotal"
     
     if let shoppingCartTotal = UserDefaults.standard.object(forKey: shoppingCartTotalKey) as? Double {
+      
       let newTotal = shoppingCartTotal + amount
       let positiveTotal = newTotal > 0 ? newTotal : 0.0
       UserDefaults.standard.set(
-        positiveTotal,
-        forKey: shoppingCartTotalKey
-      )
+        positiveTotal, forKey: shoppingCartTotalKey)
     }
     else if amount > 0 {
+      
       UserDefaults.standard.set(
-        amount,
-        forKey: shoppingCartTotalKey
-      )
+        amount, forKey: shoppingCartTotalKey)
     }
   }
 
-  // MARK: - Get Shopping Cart total price ******
+  
+  // MARK: - Get Shopping Cart total price
   
   // Get the Shopping Cart total from UserDefaults
   static func getShoppingCartTotal() -> Double {
+    
     let shoppingCartTotalKey = "shoppingCartTotal"
     
-    if let shoppingCartTotal = UserDefaults.standard.object(forKey: shoppingCartTotalKey) as? Double {
+    if let shoppingCartTotal = UserDefaults.standard.object(
+      forKey: shoppingCartTotalKey) as? Double
+    {
       return shoppingCartTotal
     }
     return 0.0

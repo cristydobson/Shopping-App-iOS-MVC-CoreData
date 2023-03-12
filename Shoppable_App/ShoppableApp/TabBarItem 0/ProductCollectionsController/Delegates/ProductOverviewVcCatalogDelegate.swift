@@ -15,7 +15,8 @@ extension ProductOverviewViewController: ProductCatalogViewControllerDelegate {
    in TabBarController
    */
   func didTapAddToCartButtonFromProductCatalogController(for product: Product) {
-    productOverviewViewControllerDelegate?.updateCartControllerFromProductCatalogController(with: product)
+    productOverviewViewControllerDelegate?
+      .updateCartControllerFromProductCatalogController(with: product)
   }
   
 }

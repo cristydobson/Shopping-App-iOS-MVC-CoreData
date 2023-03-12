@@ -1,16 +1,19 @@
 //
-//  ProductAttributedStrings.swift
+//  ProductAttributedStringHelper.swift
 //  ShoppableApp
 //
 //  Created on 2/8/23.
 //
 
+
 import Foundation
 
 
-struct ProductAttributedStrings {
+struct ProductAttributedStringHelper {
   
-  // MARK: - Product Name ******
+  
+  // MARK: - Product Name
+  
   static func getAttributedName(from product: Product, withSize fontSize: CGFloat) -> NSAttributedString {
     
     let name = product.name.uppercased()
@@ -18,7 +21,8 @@ struct ProductAttributedStrings {
   }
   
   
-  // MARK: - Product Price ******
+  // MARK: - Product Price
+  
   // Get attributed Price String
   static func getAttributedPrice(from product: Product, withSize fontSize: CGFloat) -> NSAttributedString {
     
@@ -27,13 +31,17 @@ struct ProductAttributedStrings {
   }
   
   
-  // MARK: - Product Description ******
+  // MARK: - Product Description
+  
   // Get attributed Description String
   static func getAttributedDescription(from product: Product, withSize fontSize: CGFloat) -> NSAttributedString? {
     
-    let productDescription = createDescriptionString(for: product)
+    let productDescription = ProductInfoHelper
+      .createDescriptionString(for: product)
+    
     if productDescription != "" {
-      let attributedDescription = productDescription.toStyleString(with: fontSize, and: .regular)
+      let attributedDescription = productDescription
+        .toStyleString(with: fontSize, and: .regular)
       return attributedDescription
     }
     return nil

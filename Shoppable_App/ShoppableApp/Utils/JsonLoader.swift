@@ -16,7 +16,7 @@ import Foundation
 struct JsonLoader {
   
   
-  // MARK: - Load JSON Data ******
+  // MARK: - Load JSON Data
 
   static func decodingJsonData(from fileName: String) -> ProductInformation?  {
 
@@ -40,7 +40,8 @@ struct JsonLoader {
          a ProductInformation object
          */
         let decoder = JSONDecoder()
-        let information = try decoder.decode(ProductInformation.self, from: data)
+        let information = try decoder
+          .decode(ProductInformation.self, from: data)
         return information
 
       }
@@ -53,7 +54,7 @@ struct JsonLoader {
   }
   
   
-  // MARK: - Return Product Collections ******
+  // MARK: - Return Product Collections
   
   // Create a collection of products for every product type
   static func returnProductCollectionTypeArray(from fileName: String) -> [ProductCollection] {
@@ -65,7 +66,9 @@ struct JsonLoader {
       // Loop through the enum CollectionType
       let collectionTypes = CollectionType.allCases
       var productCollections: [ProductCollection] = []
+      
       for type in collectionTypes {
+        
         let typeRawValue = type.rawValue
 
         // Only get the products that match the product type
@@ -74,11 +77,11 @@ struct JsonLoader {
         }
 
         let collection = ProductCollection(
-          type: typeRawValue,
-          products: newArr
-        )
+          type: typeRawValue, products: newArr)
+        
         productCollections.append(collection)
       }
+      
       return productCollections
     }
 

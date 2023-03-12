@@ -13,6 +13,7 @@ import UIKit
 
 extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionViewDataSource {
   
+  
   // MARK: - Section count
   
   func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -31,15 +32,18 @@ extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionV
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: productCollectionCellID, for: indexPath) as! ProductCollectionCell
+    let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: productCollectionCellID,
+      for: indexPath) as! ProductCollectionCell
     
     // Add the name of the product type
-    cell.collectionNameLabel.text = ProductCollectionInfo.getProductCollectionTypeLocalizedName(from: indexPath.row)
+    cell.collectionNameLabel.text = CollectionProductInfoHelper
+      .getProductCollectionTypeLocalizedName(from: indexPath.row)
     
     // Load the image of the product type from a URL
     if
       let firstItem = productCollections[indexPath.row].products.first,
-      let productImageURL = canCreateImageUrl(from: firstItem)
+      let productImageURL = ProductInfoHelper.canCreateImageUrl(from: firstItem)
     {
       // Attempt to load image
       let token = imageLoader?.loadImage(productImageURL) { result in
@@ -83,7 +87,8 @@ extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionV
     let index = indexPath.row
     let productList = productCollections[index].products
     userTappedProductCollection = productList
-    userTappedProductCollectionName = ProductCollectionInfo.getProductCollectionTypeLocalizedName(from: index)
+    userTappedProductCollectionName = CollectionProductInfoHelper
+      .getProductCollectionTypeLocalizedName(from: index)
     
     // Go to ProductCatalogViewController
     performSegue(withIdentifier: productCatalogSegue, sender: self)
@@ -95,7 +100,7 @@ extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionV
   func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
     
     let cell = collectionView.cellForItem(at: indexPath)
-    highlightCellOnTap(for: cell!)
+    ObjectCollectionHelper.highlightCellOnTap(for: cell!)
     return true
   }
   

@@ -11,9 +11,11 @@ import UIKit
 
 extension UIView {
   
+  
   // MARK: - Animate-in Blur View
   
   func showAnimatedAsBlur(withDuration duration: TimeInterval, delay: TimeInterval) {
+    
     if self.isHidden {
       self.isHidden = false
       self.isUserInteractionEnabled = true
@@ -36,20 +38,23 @@ extension UIView {
     
     if !self.isHidden {
       
-      UIView.animate(withDuration: duration,
-                     delay: 0,
-                     options: .curveEaseOut,
-                     animations: {
-                        self.alpha = 0
-                     })
-                     { finished in //Completion handler
-        
-                       if finished {
-                         self.isHidden = true
-                         self.isUserInteractionEnabled = false
-                       }
-                     }
+      UIView.animate(
+        withDuration: duration,
+        delay: 0,
+        options: .curveEaseOut,
+        animations: {
+          self.alpha = 0
+        })
+      { finished in
+        //Completion handler
+        if finished {
+          self.isHidden = true
+          self.isUserInteractionEnabled = false
+        }
+      }
+      
     }
+    
   }
   
   
@@ -63,8 +68,7 @@ extension UIView {
     self.layer.shadowRadius = radius
     self.layer.shadowOffset = offset
     self.layer.shadowColor = UIColor.dynamicColor(
-      light: lightColor,
-      dark: darkColor).cgColor
+      light: lightColor, dark: darkColor).cgColor
   }
   
   

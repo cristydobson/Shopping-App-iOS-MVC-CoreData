@@ -12,6 +12,7 @@ import UIKit
 
 extension CartViewController: UITableViewDelegate, UITableViewDataSource {
   
+  
   // MARK: - Sections
   // 1 section
   func numberOfSections(in tableView: UITableView) -> Int {
@@ -30,7 +31,9 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
   // Load the Product Cell
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-    let cell = tableView.dequeueReusableCell(withIdentifier: shoppingCartCellID, for: indexPath) as! CartProductCell
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: shoppingCartCellID,
+      for: indexPath) as! CartProductCell
     let index = indexPath.row
     
     // Become the cell's delegate
@@ -40,12 +43,14 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     let product = itemsInShoppingCart[index]
     
     // Add the name of the product
-    cell.productNameLabel.attributedText = ProductAttributedStrings.getAttributedName(from: product,
-                                                             withSize: 18)
+    cell.productNameLabel.attributedText = ProductAttributedStringHelper
+      .getAttributedName(from: product, withSize: 18)
     
     // Add the itemsInShoppingCart count
     let productInShoppingCartDict = itemsInShoppingCartIDs[index]
-    let inShoppingCartCount = ShoppingCartProductInfo.getSingleProductCountInShoppingCart(from: productInShoppingCartDict)
+    let inShoppingCartCount = ShoppingCartProductInfoHelper
+      .getSingleProductCountInShoppingCart(from: productInShoppingCartDict)
+    
     cell.changeQuantityButton.text = "\(inShoppingCartCount)"
     cell.itemCountInShoppingCart = inShoppingCartCount
     
@@ -57,7 +62,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     /*
      Load the image of the product from a URL
      */
-    if let imageURL = canCreateImageUrl(from: product) {
+    if let imageURL = ProductInfoHelper.canCreateImageUrl(from: product) {
       
       // Attempt to load image
       let token = imageLoader?.loadImage(imageURL) { result in
@@ -96,6 +101,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     
     let removeItemAction = UIContextualAction(style: .normal, title: "") { action, sourceView, completionHandler in
+      
       self.removeItemFromShoppingCart(from: indexPath.row)
       completionHandler(true)
     }
@@ -103,7 +109,8 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     removeItemAction.backgroundColor = .red
     removeItemAction.image = UIImage(systemName: "xmark")
     
-    let swipeConfiguration = UISwipeActionsConfiguration(actions: [removeItemAction])
+    let swipeConfiguration = UISwipeActionsConfiguration(
+      actions: [removeItemAction])
     return swipeConfiguration
   }
   

@@ -13,7 +13,7 @@ import Foundation
 
 class ProductCatalogViewController: UIViewController {
 
-  // MARK: - Properties ******
+  // MARK: - Properties
   
   // Delegate
   weak var productCatalogViewControllerDelegate: ProductCatalogViewControllerDelegate?
@@ -40,7 +40,7 @@ class ProductCatalogViewController: UIViewController {
   var imageLoader: ImageDownloader?
   
   
-  // MARK: - View Controller Life Cycle ******
+  // MARK: - View Controller's Life Cycle
    
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -49,12 +49,14 @@ class ProductCatalogViewController: UIViewController {
     setupNavigationBar()
 
     // Setup the Product Catalog Collection View
-    setupCollectionView(productCellID, for: productCatalogCollectionView, in: self)
+    ObjectCollectionHelper.setupCollectionView(
+      productCellID,
+      for: productCatalogCollectionView, in: self)
 
   }
   
   
-  // MARK: - ViewWillTransition ******
+  // MARK: - ViewWillTransition
   
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     
@@ -66,11 +68,12 @@ class ProductCatalogViewController: UIViewController {
   }
   
   
-  // MARK: - Navigation ******
+  // MARK: - Navigation
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     //Pass data for a product to ProductPageViewController
     if segue.identifier == productPageViewControllerSegue {
+      
       let viewController = segue.destination as! ProductPageViewController
       viewController.productObject = userTappedProductObj
       viewController.imageLoader = imageLoader
@@ -81,20 +84,21 @@ class ProductCatalogViewController: UIViewController {
 }
 
 
-// MARK: - Setup UI ******
+// MARK: - Setup UI
 
 extension ProductCatalogViewController {
   
   func setupNavigationBar() {
     
     title = collectionName
-    navigationController?.navigationBar.topItem?.backButtonTitle = backButtonTitle
+    navigationController?.navigationBar.topItem?
+      .backButtonTitle = backButtonTitle
   }
   
 }
 
 
-// MARK: - Observers ******
+// MARK: - Observers
 
 extension ProductCatalogViewController {
   

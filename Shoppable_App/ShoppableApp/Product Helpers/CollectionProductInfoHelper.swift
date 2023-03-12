@@ -1,9 +1,10 @@
 //
-//  ProductCollectionInfo.swift
+//  CollectionProductInfoHelper.swift
 //  ShoppableApp
 //
 //  Created on 2/8/23.
 //
+
 
 import Foundation
 
@@ -27,12 +28,13 @@ enum CollectionType: String, CaseIterable {
 }
 
 
-struct ProductCollectionInfo {
+struct CollectionProductInfoHelper {
   
   // MARK: - Get Product Collection
   
   // Get the product array of the correct collection type
   static  func getProductCollection(from array: [ProductCollection], of type: String) -> ProductCollection? {
+    
     for collection in array {
       if collection.type == type {
         return collection
@@ -41,20 +43,24 @@ struct ProductCollectionInfo {
     return nil
   }
   
+  
   // MARK: - Get localized Product Collection type
   
   // Get the product collection type localized name
   static  func getProductCollectionTypeLocalizedName(from index: Int) -> String {
     
     let collectionTypeCases = CollectionType.allCases
+    
     if index <= collectionTypeCases.count-1 {
       let collectionName = collectionTypeCases[index].productTypeTitle
-      return NSLocalizedString(collectionName,
-                               comment: "Collection type")
+      return NSLocalizedString(
+        collectionName,
+        comment: "Collection type")
     }
     
     return ""
   }
+  
   
   // MARK: - Find product from the shopping cart in a product collection
   
@@ -66,8 +72,8 @@ struct ProductCollectionInfo {
     
     // Loop throught the array to find the product in the ShoppingCart
     for product in productsArray {
+      
       if product.id == productID {
-        
         // If you find it, add it to the itemsInShoppingCart array
         return product
       }

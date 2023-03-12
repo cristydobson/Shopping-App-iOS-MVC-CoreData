@@ -13,6 +13,7 @@ import UIKit
 
 extension ProductCatalogViewController: UICollectionViewDelegate, UICollectionViewDataSource {
   
+  
   // MARK: - Section count
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 1
@@ -28,7 +29,9 @@ extension ProductCatalogViewController: UICollectionViewDelegate, UICollectionVi
   // MARK: - cellForItemAt
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: productCellID, for: indexPath) as! ProductCatalogCell
+    let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: productCellID,
+      for: indexPath) as! ProductCatalogCell
     
     // Become the cell's delegate
     cell.productCatalogCellDelegate = self
@@ -37,21 +40,21 @@ extension ProductCatalogViewController: UICollectionViewDelegate, UICollectionVi
     let currentProduct = productList[indexPath.row]
     
     // Add the name of the product
-    cell.productNameLabel.attributedText = ProductAttributedStrings.getAttributedName(from: currentProduct,
-                                                             withSize: 16)
+    cell.productNameLabel.attributedText = ProductAttributedStringHelper
+      .getAttributedName(from: currentProduct, withSize: 16)
     
     // Add the description of the product
-    cell.productDescriptionLabel.attributedText = ProductAttributedStrings.getAttributedDescription(from: currentProduct,
-                                                                           withSize: 16)
+    cell.productDescriptionLabel.attributedText = ProductAttributedStringHelper
+      .getAttributedDescription(from: currentProduct, withSize: 16)
     
     // Add the price of the product
-    cell.productPriceLabel.attributedText = ProductAttributedStrings.getAttributedPrice(from: currentProduct,
-                                                               withSize: 24)
+    cell.productPriceLabel.attributedText = ProductAttributedStringHelper
+      .getAttributedPrice(from: currentProduct, withSize: 24)
     
     /*
      Load the image of the product from a URL
      */
-    if let imageURL = canCreateImageUrl(from: currentProduct) {
+    if let imageURL = ProductInfoHelper.canCreateImageUrl(from: currentProduct) {
       
       // Attempt to load image
       let token = imageLoader?.loadImage(imageURL) { result in
@@ -102,7 +105,7 @@ extension ProductCatalogViewController: UICollectionViewDelegate, UICollectionVi
   func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
     
     let cell = collectionView.cellForItem(at: indexPath)
-    highlightCellOnTap(for: cell!)
+    ObjectCollectionHelper.highlightCellOnTap(for: cell!)
     return true
   }
   

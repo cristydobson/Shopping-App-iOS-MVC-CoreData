@@ -13,8 +13,17 @@ import UIKit
 
 
 class CheckmarkView: UIView, CAAnimationDelegate {
+  
+  
+  // Keys used in the Checkmark animation
+  
+  enum AnimationKey: String {
+    case strokeEnd
+    case animateCheckmark
+  }
 
-  // MARK: - Properties ******
+  
+  // MARK: - Properties
   
   private var animatedLayerColor: UIColor = UIColor.green {
     didSet {
@@ -32,9 +41,7 @@ class CheckmarkView: UIView, CAAnimationDelegate {
     didSet {
       if animated {
         animatedLayer = createCheckMarkLayer(
-          strokeColor: animatedLayerColor,
-          strokeEnd: 0
-        )
+          strokeColor: animatedLayerColor, strokeEnd: 0)
         layer.addSublayer(animatedLayer!)
       }
     }
@@ -43,7 +50,7 @@ class CheckmarkView: UIView, CAAnimationDelegate {
   private var animatedLayer: CAShapeLayer?
   
   
-  // MARK: - Init Methods ******
+  // MARK: - Init Methods
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -72,7 +79,7 @@ extension CheckmarkView {
 }
 
 
-// MARK: - Checkmark Layer ******
+// MARK: - Checkmark Layer
 
 extension CheckmarkView {
   
@@ -90,20 +97,19 @@ extension CheckmarkView {
       radius: centerX,
       startAngle: startEndAngle,
       endAngle: startEndAngle,
-      clockwise: true
-    )
+      clockwise: true)
+    
     checkmarkPath.move(
       to: CGPoint(x: centerX - 23 * scale,
-                  y: centerY - 1 * scale)
-    )
+                  y: centerY - 1 * scale))
+    
     checkmarkPath.addLine(
       to: CGPoint(x: centerX - 6 * scale,
-                  y: centerY + 15.9 * scale)
-    )
+                  y: centerY + 15.9 * scale))
+    
     checkmarkPath.addLine(
       to: CGPoint(x: centerX + 22.8 * scale,
-                  y: centerY - 13.4 * scale)
-    )
+                  y: centerY - 13.4 * scale))
     
     // Create the checkmark layer
     let checkmarkLayer = CAShapeLayer()
@@ -127,23 +133,22 @@ extension CheckmarkView {
   
   // Perform the animation
   func animate(duration: TimeInterval = 0.6, completion: @escaping (Bool) -> Void) {
+    
     guard let animatedLayer = animatedLayer else { return }
     
-    let animation = CABasicAnimation(keyPath: AnimationKey.strokeEnd.rawValue)
+    let animation = CABasicAnimation(
+      keyPath: AnimationKey.strokeEnd.rawValue)
     animation.delegate = self
     animation.fromValue = 0
     animation.toValue = 1
     animation.timingFunction = CAMediaTimingFunction(
-      name: CAMediaTimingFunctionName.easeOut
-    )
+      name: CAMediaTimingFunctionName.easeOut)
     animation.duration = duration
     animation.isRemovedOnCompletion = true
     
     animatedLayer.strokeEnd = 2
-    animatedLayer.add(
-      animation,
-      forKey: AnimationKey.animateCheckmark.rawValue
-    )
+    animatedLayer.add(animation,
+                      forKey: AnimationKey.animateCheckmark.rawValue)
     
     completion(true)
   }

@@ -13,6 +13,7 @@ import UIKit
 
 extension ProductOverviewViewController: UICollectionViewDelegateFlowLayout {
   
+  
   // MARK: - Set the cell's size
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

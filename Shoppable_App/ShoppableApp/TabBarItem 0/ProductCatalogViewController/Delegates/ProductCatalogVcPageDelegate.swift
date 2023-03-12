@@ -20,7 +20,8 @@ extension ProductCatalogViewController: ProductPageViewControllerDelegate {
      Update the products in the Shopping Cart array
      in TabBarController
      */
-    productCatalogViewControllerDelegate?.didTapAddToCartButtonFromProductCatalogController(for: product)
+    productCatalogViewControllerDelegate?
+      .didTapAddToCartButtonFromProductCatalogController(for: product)
     
     /*
      Let the CartViewController know that it should update

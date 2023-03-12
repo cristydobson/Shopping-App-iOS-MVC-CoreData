@@ -11,8 +11,7 @@
 protocol ProductOverviewViewControllerDelegate: AnyObject {
   
   func updateCartControllerFromProductCatalogController(
-    with product: Product
-  )
+    with product: Product)
   
 }
 

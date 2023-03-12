@@ -1,9 +1,10 @@
 //
-//  ShoppingCartProductInfo.swift
+//  ShoppingCartProductInfoHelper.swift
 //  ShoppableApp
 //
 //  Created on 2/8/23.
 //
+
 
 import Foundation
 
@@ -21,12 +22,13 @@ enum UserDefaultsKeys: String {
 }
 
 
-struct ShoppingCartProductInfo {
+struct ShoppingCartProductInfoHelper {
   
-  // MARK: - Item ID ******
+  // MARK: - Item ID
   
   // Get the Shopping Cart item ID
   static func getShoppingCartItemID(from product: ProductDictionary) -> String {
+    
     if let id = product[UserDefaultsKeys.id.rawValue] as? String {
       return id
     }
@@ -34,27 +36,28 @@ struct ShoppingCartProductInfo {
   }
   
   
-  // MARK: - Item Type ******
+  // MARK: - Item Type
   
   // Get the Shopping Cart item type
   static func getShoppingCartItemType(from product: ProductDictionary) -> String {
+    
     if let type = product[UserDefaultsKeys.type.rawValue] as? String {
       return type
     }
     return ""
   }
   
-  // MARK: - Single Item Count in Shopping Cart ******
+  // MARK: - Single Item Count in Shopping Cart 
   
   // Get the product count in the Shopping Cart
   static func getSingleProductCountInShoppingCart(from currentProduct: ProductDictionary) -> Int {
+    
     if let productCount = currentProduct[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int {
       return productCount
     }
     return 0
   }
 
-  
 }
 
 

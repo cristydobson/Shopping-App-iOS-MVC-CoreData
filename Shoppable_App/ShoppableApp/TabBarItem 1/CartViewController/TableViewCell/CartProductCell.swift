@@ -7,12 +7,14 @@
  This is the cell from CartViewController's tableView
  */
 
+
 import UIKit
 
 
 class CartProductCell: UITableViewCell {
 
-  // MARK: - Properties ******
+  
+  // MARK: - Properties
   
   // Delegate
   weak var cartProductCellDelegate: CartProductCellDelegate?
@@ -41,7 +43,7 @@ class CartProductCell: UITableViewCell {
   var newPickerValue = 0
   
   
-  // MARK: - awakeFromNib ******
+  // MARK: - awakeFromNib
   
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -63,7 +65,7 @@ class CartProductCell: UITableViewCell {
   }
   
   
-  // MARK: - prepareForReuse ******
+  // MARK: - prepareForReuse
   
   override func prepareForReuse() {
     super.prepareForReuse()
@@ -75,14 +77,14 @@ class CartProductCell: UITableViewCell {
   }
   
   
-  // MARK: - Button Actions ******
+  // MARK: - Button Actions
   
   @IBAction func optionsButtonAction(_ sender: UIButton) { }
   
 }
 
 
-// MARK: - UI Style ******
+// MARK: - UI Style
 
 extension CartProductCell {
   
@@ -91,13 +93,13 @@ extension CartProductCell {
     
     backgroundColor = .clear
     selectionStyle = .none
+    
     bgView.addDropShadow(
       opacity: 0.23,
       radius: 4,
       offset: CGSize.zero,
       lightColor: .gray,
-      darkColor: .white
-    )
+      darkColor: .white)
   }
   
   func thumbnailStyle() {
@@ -111,16 +113,18 @@ extension CartProductCell {
   
   // Change Quantity button style
   func changeQuantityButtonStyle() {
+    
     changeQuantityButton.addBorderStyle(
       borderWidth: 1,
-      borderColor: .imageBorderGray
-    )
-    changeQuantityButton.addCornerRadius(changeQuantityButton.frame.height/2)
+      borderColor: .imageBorderGray)
+    
+    changeQuantityButton.addCornerRadius(
+      changeQuantityButton.frame.height/2)
   }
 }
 
 
-// MARK: - Setup UI ******
+// MARK: - Setup UI
 
 extension CartProductCell {
   
@@ -130,15 +134,16 @@ extension CartProductCell {
      "Options" button menu
      */
     removeItemFromShoppingCart = UICommand(
-      title: NSLocalizedString("Remove Item",
-                               comment: "Shopping Cart cell -> options button -> pull-down menu command."),
+      title: NSLocalizedString(
+        "Remove Item",
+        comment: "Shopping Cart cell -> options button -> pull-down menu command."),
       image: UIImage(systemName: "trash"),
-      action: #selector(removeItemFromShoppingCartAction)
-    )
+      action: #selector(removeItemFromShoppingCartAction))
+    
     optionsButtonMenu = UIMenu(
       options: .displayInline,
-      children: [removeItemFromShoppingCart!]
-    )
+      children: [removeItemFromShoppingCart!])
+    
     optionsButton.menu = optionsButtonMenu
   }
   

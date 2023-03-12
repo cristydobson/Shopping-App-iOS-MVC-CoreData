@@ -13,7 +13,8 @@ import UIKit
 
 class ProductPageViewController: UIViewController {
 
-  // MARK: - Properties ******
+  
+  // MARK: - Properties
   
   // Delegate
   weak var productPageViewControllerDelegate: ProductPageViewControllerDelegate?
@@ -47,7 +48,7 @@ class ProductPageViewController: UIViewController {
   var checkmark: CheckmarkView!
   
   
-  // MARK: - View Controller Lifecycle ******
+  // MARK: - View Controller's Life Cycle 
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -73,7 +74,7 @@ class ProductPageViewController: UIViewController {
   }
   
   
-  // MARK: - Button Actions ******
+  // MARK: - Button Actions
   
   @IBAction func addToCartButtonAction(_ sender: UIButton) {
     
@@ -81,7 +82,8 @@ class ProductPageViewController: UIViewController {
      Update the products in the Shopping Cart array
      in TabBarController
      */
-    productPageViewControllerDelegate?.didTapAddToCartButtonFromProductPage(for: productObject!)
+    productPageViewControllerDelegate?
+      .didTapAddToCartButtonFromProductPage(for: productObject!)
     
     /*
      Show a blurred background view while the Checkmark animation
@@ -94,40 +96,44 @@ class ProductPageViewController: UIViewController {
 }
 
 
-// MARK: - Setup UI ******
+// MARK: - Setup UI
 
 extension ProductPageViewController {
   
   func setupNavigationBar() {
-    title = NSLocalizedString("Product",
-                              comment: "Title from ProductPageViewController")
+    title = NSLocalizedString(
+      "Product",
+      comment: "Title from ProductPageViewController")
   }
   
   // Setup ContainerScrollView
   func setupContainerScrollView() {
-    containerScrollView.contentInset = UIEdgeInsets(top: 0, left: 0,
-                                                    bottom: 120, right: 0)
+    containerScrollView.contentInset = UIEdgeInsets(
+      top: 0, left: 0, bottom: 120, right: 0)
   }
   
   // AddToCart button's default text
   func setAddToCartButtonText() {
     
-    let addToCartButtonText = NSLocalizedString("Add to Shopping Cart",
-                                                comment: "Add to Shopping Cart Button label text")
-    attributedCartButtonText = addToCartButtonText.toStyleString(with: 16, and: .semibold)
+    let addToCartButtonText = NSLocalizedString(
+      "Add to Shopping Cart",
+      comment: "Add to Shopping Cart Button label text")
+    
+    attributedCartButtonText = addToCartButtonText
+      .toStyleString(with: 16, and: .semibold)
   }
   
   // Setup the Add To Cart button
   func setupAddToCartButton(isEnabled: Bool) {
     
     // Check if the button has a Checkmark animating on top of it
-    let buttonText = isEnabled ? attributedCartButtonText : NSAttributedString(string: "", attributes: nil)
+    let buttonText = isEnabled ?
+      attributedCartButtonText :
+      NSAttributedString(string: "", attributes: nil)
     
     // Set the button's text
     addToCartButton.setAttributedTitle(
-      buttonText,
-      for: .normal
-    )
+      buttonText, for: .normal)
     
     addToCartButton.isEnabled = isEnabled
   }
@@ -135,7 +141,7 @@ extension ProductPageViewController {
 }
 
 
-// MARK: - UI Style ******
+// MARK: - UI Style
 
 extension ProductPageViewController {
   
@@ -144,8 +150,8 @@ extension ProductPageViewController {
     // Customize the edge of the ContainerView
     productImageView.addBorderStyle(
       borderWidth: 1,
-      borderColor: .imageBorderGray
-    )
+      borderColor: .imageBorderGray)
+    
     productImageView.addCornerRadius(5)
     
     // Add drop shadow to the product's imageView
@@ -166,7 +172,7 @@ extension ProductPageViewController {
 }
 
 
-// MARK: - Load Product Info ******
+// MARK: - Load Product Info
 
 extension ProductPageViewController {
   
@@ -177,7 +183,7 @@ extension ProductPageViewController {
     
     if
       let product = productObject,
-      let imageURL = canCreateImageUrl(from: product)
+      let imageURL = ProductInfoHelper.canCreateImageUrl(from: product)
     {
       
       // Attempt to load image
@@ -202,16 +208,16 @@ extension ProductPageViewController {
     if let productObj = productObject {
       
       // Add the name of the product
-      productNameLabel.attributedText = ProductAttributedStrings.getAttributedName(from: productObj,
-                                                          withSize: 18)
+      productNameLabel.attributedText = ProductAttributedStringHelper
+        .getAttributedName(from: productObj, withSize: 18)
       
       // Add the description of the product
-      productDescriptionLabel.attributedText = ProductAttributedStrings.getAttributedDescription(from: productObj,
-                                                                        withSize: 18)
+      productDescriptionLabel.attributedText = ProductAttributedStringHelper
+        .getAttributedDescription(from: productObj, withSize: 18)
       
       // Add the price of the product
-      productPriceLabel.attributedText = ProductAttributedStrings.getAttributedPrice(from: productObj,
-                                                            withSize: 34)
+      productPriceLabel.attributedText = ProductAttributedStringHelper
+        .getAttributedPrice(from: productObj, withSize: 34)
     }
   }
   

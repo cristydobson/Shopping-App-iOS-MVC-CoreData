@@ -10,7 +10,6 @@
 protocol ProductCatalogCellDelegate: AnyObject {
   
   func didTapAddToCartButton(
-    fromProductCatalogCell cell: ProductCatalogCell
-  )
+    fromProductCatalogCell cell: ProductCatalogCell)
   
 }

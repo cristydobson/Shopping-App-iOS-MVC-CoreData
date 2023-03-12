@@ -10,8 +10,7 @@
 protocol ProductPageViewControllerDelegate: AnyObject {
   
   func didTapAddToCartButtonFromProductPage(
-    for product: Product
-  )
+    for product: Product)
   
 }
 

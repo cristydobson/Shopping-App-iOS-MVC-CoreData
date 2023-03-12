@@ -16,7 +16,7 @@ typealias ProductDictionary = [String:AnyObject]
 
 class TabBarController: UITabBarController {
 
-  // MARK: - Properties ******
+  // MARK: - Properties
   
   // UserDefaults
   let itemsInShoppingCartArrayKey = "itemsInShoppingCartArray"
@@ -35,7 +35,7 @@ class TabBarController: UITabBarController {
   var itemsInShoppingCartCount = 0
   
   
-  // MARK: - View Controller's Life Cycle ******
+  // MARK: - View Controller's Life Cycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -66,7 +66,7 @@ class TabBarController: UITabBarController {
 }
 
 
-// MARK: - Setup UI ******
+// MARK: - Setup UI
 
 extension TabBarController {
   
@@ -74,10 +74,10 @@ extension TabBarController {
   func customizeTabBarItems() {
     
     let tabBarItems = tabBar.items
-    tabBarItems?[0].title = NSLocalizedString("Collections",
-                                              comment: "Collections TabBar item title")
-    tabBarItems?[1].title = NSLocalizedString("Cart",
-                                              comment: "Cart TabBar item title")
+    tabBarItems?[0].title = NSLocalizedString(
+      "Collections", comment: "Collections TabBar item title")
+    tabBarItems?[1].title = NSLocalizedString(
+      "Cart", comment: "Cart TabBar item title")
     tabBar.tintColor = .label
     tabBar.unselectedItemTintColor = .systemGray3
   }
@@ -97,7 +97,8 @@ extension TabBarController {
   
   // Cart's TabBarItem badge on app launch
   func setupInitialCartTabBarItemBadge() {
-    let itemsInCartCount = ShoppingCartProducts.getItemCountInShoppingCart(from: itemsInShoppingCartIDs)
+    let itemsInCartCount = ShoppingCartProductHelper.getItemCountInShoppingCart(
+      from: itemsInShoppingCartIDs)
     itemsInShoppingCartCount = itemsInCartCount
     setupCartTabBarItemBadge(with: itemsInCartCount)
   }
@@ -105,7 +106,7 @@ extension TabBarController {
 }
 
 
-// MARK: - Setup Children Delegates ******
+// MARK: - Setup Children Delegates
 
 /*
  Become the delegate of children's top controllers
@@ -163,13 +164,16 @@ extension TabBarController {
   
   // Load the data from the products.json file
   func loadJsonData() {
-    let products = JsonLoader.returnProductCollectionTypeArray(from: "products")
+    let products = JsonLoader.returnProductCollectionTypeArray(
+      from: "products")
     productCollections = products
   }
   
   // Get itemsInShoppingCart array from UserDefaults if it exists
   func getItemsInShoppingCart() {
-    if let itemsInShoppingCartArray = UserDefaults.standard.array(forKey: itemsInShoppingCartArrayKey) as? [ProductDictionary] {
+    if let itemsInShoppingCartArray = UserDefaults.standard.array(
+      forKey: itemsInShoppingCartArrayKey) as? [ProductDictionary]
+    {
       itemsInShoppingCartIDs = itemsInShoppingCartArray
     }
   }

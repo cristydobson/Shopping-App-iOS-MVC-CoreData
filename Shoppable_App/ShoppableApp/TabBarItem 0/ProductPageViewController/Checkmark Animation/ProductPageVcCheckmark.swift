@@ -13,20 +13,20 @@ import UIKit
 
 extension ProductPageViewController {
   
+  
   /*
    Animate a checkmark on the 'Add To Cart' button
    as feedback to the user
    */
-  
   
   // MARK: - Setup the Checkmark animation
 
   func setupCheckmarkAnimation() {
     checkmark = CheckmarkView()
     let checkmarkHeight = addToCartButton.frame.height-4
-    let checkMarkRect = CGRect(x: 0, y: 0,
-                               width: checkmarkHeight,
-                               height: checkmarkHeight)
+    let checkMarkRect = CGRect(
+      x: 0, y: 0,
+      width: checkmarkHeight, height: checkmarkHeight)
     
     checkmark.setupAnimation(
       frame: checkMarkRect,
@@ -73,6 +73,7 @@ extension ProductPageViewController {
           // Remove the blurred background view
           self.blurView.hideAnimatedAsBlur(withDuration: 0.1, delay: 0)
         }
+        
       }
     }
     

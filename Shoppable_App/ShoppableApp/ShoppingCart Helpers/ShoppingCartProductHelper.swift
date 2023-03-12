@@ -1,14 +1,16 @@
 //
-//  ShoppingCartProducts.swift
+//  ShoppingCartProductHelper.swift
 //  ShoppableApp
 //
 //  Created on 2/10/23.
 //
 
+
 import Foundation
 
 
-struct ShoppingCartProducts {
+struct ShoppingCartProductHelper {
+  
   
   // MARK: - Get Products in Shopping Cart
   
@@ -28,11 +30,17 @@ struct ShoppingCartProducts {
        4.- Find the product in the Shopping Cart
        */
       
-      let productID = ShoppingCartProductInfo.getShoppingCartItemID(from: item)
-      let collectionType = ShoppingCartProductInfo.getShoppingCartItemType(from: item)
+      let productID = ShoppingCartProductInfoHelper
+        .getShoppingCartItemID(from: item)
+      
+      let collectionType = ShoppingCartProductInfoHelper
+        .getShoppingCartItemType(from: item)
+      
       if
-        let collection = ProductCollectionInfo.getProductCollection(from: collections, of: collectionType),
-        let product = ProductCollectionInfo.getProductFromShoppingCartIn(in: collection, for: productID)
+        let collection = CollectionProductInfoHelper
+          .getProductCollection(from: collections, of: collectionType),
+        let product = CollectionProductInfoHelper
+          .getProductFromShoppingCartIn(in: collection, for: productID)
       {
         products.append(product)
       }
@@ -42,13 +50,18 @@ struct ShoppingCartProducts {
     return products
   }
 
+  
   // MARK: - Get Product Count in Shopping Cart
   
   // Get the product count in the Shopping Cart
   static func getItemCountInShoppingCart(from array: [ProductDictionary]) -> Int {
+    
     var itemCount = 0
+    
     for item in array {
-      if let itemsInShoppingCartCount = item[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int {
+      
+      if let itemsInShoppingCartCount = item[UserDefaultsKeys.inShoppingCartCount.rawValue] as? Int
+      {
         itemCount += itemsInShoppingCartCount
       }
     }
@@ -60,8 +73,8 @@ struct ShoppingCartProducts {
   
   // Save Shopping Cart products in UserDefaults
   static func saveShoppingCartProductsInUserDefaults(_ array: [ProductDictionary]) {
-    UserDefaults.standard.set(array,
-                              forKey: "itemsInShoppingCartArray"
+    UserDefaults.standard.set(
+      array, forKey: "itemsInShoppingCartArray"
     )
   }
   

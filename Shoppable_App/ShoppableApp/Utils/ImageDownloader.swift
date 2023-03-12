@@ -14,13 +14,14 @@ import UIKit
 
 class ImageDownloader {
   
-  // MARK: - Properties ******
+  
+  // MARK: - Properties
   
   private var loadedImages: [URL: UIImage] = [:]
   private var runningRequests: [UUID: URLSessionDataTask] = [:]
   
   
-  // MARK: - Load Images from a URL ******
+  // MARK: - Load Images from a URL
   
   func loadImage(_ url: URL, _ completion: @escaping (Result<UIImage, Error>) -> Void) -> UUID? {
     
@@ -33,6 +34,7 @@ class ImageDownloader {
     let uuid = UUID()
     
     let task = URLSession.shared.dataTask(with: url) { data, response, error in
+      
       // Remove the running task
       defer {
         self.runningRequests.removeValue(forKey: uuid)

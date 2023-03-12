@@ -22,7 +22,8 @@ extension ProductCatalogViewController: ProductCatalogCellDelegate {
        in TabBarController
        */
       let currentProduct = productList[index]
-      productCatalogViewControllerDelegate?.didTapAddToCartButtonFromProductCatalogController(for: currentProduct)
+      productCatalogViewControllerDelegate?
+        .didTapAddToCartButtonFromProductCatalogController(for: currentProduct)
       
       /*
        Let the CartViewController know that it should update

@@ -13,7 +13,8 @@ import UIKit
 
 class ProductCatalogCell: UICollectionViewCell {
 
-  // MARK: - Properties ******
+  
+  // MARK: - Properties
   
   // Delegate
   weak var productCatalogCellDelegate: ProductCatalogCellDelegate?
@@ -34,7 +35,7 @@ class ProductCatalogCell: UICollectionViewCell {
   @IBOutlet weak var addToCartButton: UIButton!
   
   
-  // MARK: - awakeFromNib ******
+  // MARK: - awakeFromNib
   
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -47,7 +48,7 @@ class ProductCatalogCell: UICollectionViewCell {
   }
   
   
-  // MARK: - prepareForReuse ******
+  // MARK: - prepareForReuse
   
   override func prepareForReuse() {
     super.prepareForReuse()
@@ -58,15 +59,16 @@ class ProductCatalogCell: UICollectionViewCell {
   }
   
   
-  // MARK: - Button Actions ******
+  // MARK: - Button Actions
   
   @IBAction func addToCartButtonAction(_ sender: UIButton) {
     
     // Animate the cell's Shopping Cart button being tapped
-    animateShoppingCartRoundButton(sender)
+    ButtonAnimationHelper.animateShoppingCartRoundButton(sender)
     
     // Tell the cell's delegate about the button tap
-    productCatalogCellDelegate?.didTapAddToCartButton(fromProductCatalogCell: self)
+    productCatalogCellDelegate?
+      .didTapAddToCartButton(fromProductCatalogCell: self)
   }
   
 }

@@ -13,7 +13,8 @@ import UIKit
 
 class ProductCollectionCell: UICollectionViewCell {
 
-  // MARK: - Properties ******
+  
+  // MARK: - Properties
   
   // Container View
   @IBOutlet weak var containerView: UIView!
@@ -26,7 +27,7 @@ class ProductCollectionCell: UICollectionViewCell {
   @IBOutlet weak var collectionNameLabel: UILabel!
   
   
-  // MARK: - awakeFromNib ******
+  // MARK: - awakeFromNib
   
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -39,7 +40,7 @@ class ProductCollectionCell: UICollectionViewCell {
   }
   
   
-  // MARK: - prepareForReuse ******
+  // MARK: - prepareForReuse
   
   override func prepareForReuse() {
     super.prepareForReuse()
@@ -51,7 +52,7 @@ class ProductCollectionCell: UICollectionViewCell {
 }
 
 
-// MARK: - UI Style ******
+// MARK: - UI Style
 
 extension ProductCollectionCell {
   

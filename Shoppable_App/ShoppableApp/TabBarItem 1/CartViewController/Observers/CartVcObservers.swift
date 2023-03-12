@@ -12,6 +12,7 @@ import Foundation
 
 extension CartViewController {
   
+  
   // MARK: - Setup Observer
   /*
    Add an Observer to update the CartViewController data and UI when
@@ -26,6 +27,7 @@ extension CartViewController {
       object: nil
     )
   }
+  
   
   // MARK: - Observer Action
   /*
