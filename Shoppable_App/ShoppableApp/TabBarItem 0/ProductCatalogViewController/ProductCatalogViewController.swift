@@ -23,7 +23,7 @@ class ProductCatalogViewController: UIViewController {
   var userTappedProductObj: Product?
   
   // Observer Names
-  var updateShoppingCartObserverName = "updateShoppingCartObserver"
+  let updateShoppingCartObserverName = "updateShoppingCartObserver"
   
   // Title
   var collectionName = ""

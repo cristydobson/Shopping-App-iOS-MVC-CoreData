@@ -20,7 +20,7 @@ class CartViewController: UIViewController {
   weak var cartViewControllerDelegate: CartViewControllerDelegate?
   
   // Observer Name
-  var updateShoppingCartObserverName = "updateShoppingCartObserver"
+  let updateShoppingCartObserverName = "updateShoppingCartObserver"
   var reloadShoppingTableView = false
   
   // Blur View
@@ -183,9 +183,12 @@ extension CartViewController {
     
     // Remove product from Shopping Cart in TabBarController
     cartViewControllerDelegate?.didTapRemoveItemFromCartController(itemCount, from: index)
-    
+
     // Update the total price
     updateTotalPrice(for: itemsInShoppingCart[index], and: -itemCount)
+    
+    // Update the total price label
+    setupTotalPriceLabel()
     
     // Remove item from the ShoppingCart arrays
     updateRemovedItemsInShoppingCartArrays(for: index)

@@ -20,7 +20,6 @@ struct ShoppingCartTotalPrice {
     let shoppingCartTotalKey = "shoppingCartTotal"
     
     if let shoppingCartTotal = UserDefaults.standard.object(forKey: shoppingCartTotalKey) as? Double {
-      
       let newTotal = shoppingCartTotal + amount
       let positiveTotal = newTotal > 0 ? newTotal : 0.0
       UserDefaults.standard.set(
