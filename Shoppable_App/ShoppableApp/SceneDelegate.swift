@@ -5,16 +5,24 @@
 //  Created on 1/19/23.
 //
 
+
 import UIKit
+import CoreData
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+  
   var window: UIWindow?
 
-
+  
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
     guard let _ = (scene as? UIWindowScene) else { return }
+    
+    //Set the color for any NavigationBar in the app
+    UINavigationBar.appearance().tintColor = UIColor.dynamicColor(light: .black, dark: .white)
+    
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {

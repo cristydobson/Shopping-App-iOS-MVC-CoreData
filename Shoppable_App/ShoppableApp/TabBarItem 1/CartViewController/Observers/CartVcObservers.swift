@@ -36,7 +36,7 @@ extension CartViewController {
    elsewhere
    */
   @objc func didUpdateShoppingCart(_ notification: Notification) {
-    cartViewControllerDelegate?.updateItemsInShoppingCartIDs(on: self)
+    cartViewControllerDelegate?.updateProductsInShoppingCart(on: self)
     reloadShoppingTableView = true
   }
 }

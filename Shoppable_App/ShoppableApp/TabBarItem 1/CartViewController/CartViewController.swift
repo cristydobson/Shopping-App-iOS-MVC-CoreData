@@ -9,12 +9,18 @@
 
 import UIKit
 import UserNotifications
+import CoreData
 
 
 class CartViewController: UIViewController {
 
   
   // MARK: - Properties
+  
+  // Core Data
+  var coreDataStack: CoreDataStack!
+  var shoppingCart: ShoppingCart!
+  var shoppingCartProducts: [ShoppingCartProduct] = []
   
   // Delegate
   weak var cartViewControllerDelegate: CartViewControllerDelegate?
@@ -34,13 +40,6 @@ class CartViewController: UIViewController {
   // Total Shopping Amount
   @IBOutlet weak var totalTitleLabel: UILabel!
   @IBOutlet weak var totalShoppingAmountLabel: UILabel!
-  
-  // Products
-  var productCollections: [ProductCollection] = []
-  
-  // Items in the Shopping Cart
-  var itemsInShoppingCartIDs: [ProductDictionary] = []
-  var itemsInShoppingCart: [Product] = []
   
   // Image Loader
   var imageLoader: ImageDownloader?
@@ -62,11 +61,6 @@ class CartViewController: UIViewController {
     setupViewTapGesture(
       for: blurView,
       withAction: #selector(didCancelPickerView))
-    
-    // Get Product Objects from the IDs stored in UserDefaults
-    itemsInShoppingCart = ShoppingCartProductHelper
-      .getProductsInShoppingCart(itemsInShoppingCartIDs,
-                                 from: productCollections)
     
     // Setup Shopping Cart TableView
     setupProductsTableViewInsets()
@@ -91,9 +85,6 @@ class CartViewController: UIViewController {
     if reloadShoppingTableView {
       reloadShoppingTableView = false
       setupTotalPriceLabel()
-      itemsInShoppingCart = ShoppingCartProductHelper
-        .getProductsInShoppingCart(itemsInShoppingCartIDs,
-                                   from: productCollections)
       shoppingCartTableView.reloadData()
     }
   }
@@ -140,7 +131,7 @@ extension CartViewController {
   
   func setupTotalPriceLabel() {
     // Get the total price from UserDefaults and display it
-    let totalPriceAmount = ShoppingCartTotalPriceHelper.getShoppingCartTotal()
+    let totalPriceAmount = shoppingCart.totalAmount
     totalShoppingAmountLabel.text = totalPriceAmount.toCurrencyFormat()
   }
   
@@ -179,37 +170,35 @@ extension CartViewController {
   // Remove a product from the Shopping Cart
   func removeItemFromShoppingCart(from index: Int) {
     
-    // Updates the Cart's TabBar Item badge
-    let currentItemIdDictionary = itemsInShoppingCartIDs[index]
+    let product = shoppingCartProducts[index]
     
     // Get how many of the same product are in the Shopping Cart
-    let itemCount = ShoppingCartProductInfoHelper
-      .getSingleProductCountInShoppingCart(from: currentItemIdDictionary)
+    let itemCount = Int(product.count)
     
-    // Remove product from Shopping Cart in TabBarController
-    cartViewControllerDelegate?
-      .didTapRemoveItemFromCartController(itemCount, from: index)
-
     // Update the total price
-    updateTotalPrice(for: itemsInShoppingCart[index], and: -itemCount)
+    updateTotalPriceInCoreData(with: product.price, itemCount: -itemCount)
     
     // Update the total price label
     setupTotalPriceLabel()
     
-    // Remove item from the ShoppingCart arrays
-    updateRemovedItemsInShoppingCartArrays(for: index)
+    // Remove product from Shopping Cart in TabBarController
+    deleteShoppingCartProductFromCoreData(from: index)
+    cartViewControllerDelegate?.updateShoppingCartProducts(shoppingCartProducts)
     
     // Reload the ShoppingCartTableView
     shoppingCartTableView.reloadData()
   }
   
-  // Update itemsInShoppingCart arrays
-  func updateRemovedItemsInShoppingCartArrays(for index: Int) {
+  func deleteShoppingCartProductFromCoreData(from index: Int) {
+    let product = shoppingCartProducts[index]
+    let count = product.count
     
-    itemsInShoppingCartIDs.remove(at: index)
-    itemsInShoppingCart.remove(at: index)
-    ShoppingCartProductHelper
-      .saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
+    shoppingCart.productCount -= count
+    
+    coreDataStack.managedContext.delete(product)
+    coreDataStack.saveContext()
+    
+    shoppingCartProducts.remove(at: index)
   }
   
 }
@@ -221,11 +210,10 @@ extension CartViewController {
   // Update the product count in the Shopping Cart
   func updateProductInCartCount(for index: Int, with newItemCount: Int) {
     
-    let currentItemIdDictionary = itemsInShoppingCartIDs[index]
+    let currentProduct = shoppingCartProducts[index]
     
-    // Get how many of the same product are in the Shopping Cart
-    let oldItemCount = ShoppingCartProductInfoHelper
-      .getSingleProductCountInShoppingCart(from: currentItemIdDictionary)
+    // Get how many of the same product were in the Shopping Cart
+    let oldItemCount = Int(currentProduct.count)
     
     // Delta between old and new product count values
     let delta =  newItemCount - oldItemCount
@@ -239,39 +227,40 @@ extension CartViewController {
   
   // User did update Shopping Cart products
   func updateShoppingCart(with newCount: Int, delta: Int, on index: Int) {
-    // Update the Cart's TabBar Item badge
-    cartViewControllerDelegate?
-      .didUpdateItemQuantityFromCartController(delta, with: itemsInShoppingCartIDs)
-    
-    // Update the product's count on the ShoppingCart array
-    updateProductCountInShoppingCart(newCount, on: index)
-    
-    // Update the Shopping Cart array in UserDefaults
-    ShoppingCartProductHelper
-      .saveShoppingCartProductsInUserDefaults(itemsInShoppingCartIDs)
-    
+
+    // Update the product's count on the ShoppingCart
+    updateCountInShoppingCartProductInCoreData(newCount, on: index)
+    updateTotalShoppingCartProductCountInCoreData(with: delta)
+
     // Update the total product price
-    updateTotalPrice(for: itemsInShoppingCart[index], and: delta)
+    let productPrice = shoppingCartProducts[index].price
+    updateTotalPriceInCoreData(with: productPrice, itemCount: delta)
     
     // Update the total price label
     setupTotalPriceLabel()
     
+    // Update the Cart's TabBar Item badge
+    cartViewControllerDelegate?.updateTabBarBadge()
+    
     shoppingCartTableView.reloadData()
   }
   
-  // Update the product's count on the ShoppingCart array
-  func updateProductCountInShoppingCart(_ newItemCount: Int, on index: Int) {
-    itemsInShoppingCartIDs[index].updateValue(
-      newItemCount as AnyObject,
-      forKey: UserDefaultsKeys.inShoppingCartCount.rawValue
-    )
+  func updateTotalShoppingCartProductCountInCoreData(with itemCount: Int) {
+    shoppingCart.productCount += Int64(itemCount)
+    coreDataStack.saveContext()
   }
   
-  // Update the total product price
-  func updateTotalPrice(for product: Product, and itemCount: Int) {
-    let newTotalPrice = product.price.value.byItemCount(itemCount)
-    ShoppingCartTotalPriceHelper
-      .updateTheShoppingCartTotal(with: newTotalPrice)
+  // Update the product's count on the ShoppingCart Product
+  func updateCountInShoppingCartProductInCoreData(_ newItemCount: Int, on index: Int) {
+    let product = shoppingCartProducts[index]
+    product.count = Int64(newItemCount)
+    coreDataStack.saveContext()
+  }
+  
+  func updateTotalPriceInCoreData(with amount: Double, itemCount: Int) {
+    let newAmount = amount.byItemCount(itemCount)
+    shoppingCart.totalAmount += newAmount
+    coreDataStack.saveContext()
   }
   
 }

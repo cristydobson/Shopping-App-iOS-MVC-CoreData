@@ -13,14 +13,12 @@ import Foundation
 
 protocol CartViewControllerDelegate: AnyObject {
   
-  func didTapRemoveItemFromCartController(
-    _ count: Int, from index: Int)
-  
-  func didUpdateItemQuantityFromCartController(
-    _ count: Int, with updatedArray: [ProductDictionary])
+  func updateShoppingCartProducts(_ products: [ShoppingCartProduct])
   
   // Called in the "Add To Cart" observer
-  func updateItemsInShoppingCartIDs(
+  func updateProductsInShoppingCart(
     on viewController: CartViewController)
+  
+  func updateTabBarBadge()
   
 }

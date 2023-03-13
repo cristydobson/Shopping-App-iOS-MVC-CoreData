@@ -183,7 +183,7 @@ extension ProductPageViewController {
     
     if
       let product = productObject,
-      let imageURL = ProductInfoHelper.canCreateImageUrl(from: product)
+      let imageURL = ProductInfoHelper.canCreateImageUrl(from: product.imageUrl)
     {
       
       // Attempt to load image
@@ -209,7 +209,7 @@ extension ProductPageViewController {
       
       // Add the name of the product
       productNameLabel.attributedText = ProductAttributedStringHelper
-        .getAttributedName(from: productObj, withSize: 18)
+        .getAttributedName(from: productObj.name, withSize: 18)
       
       // Add the description of the product
       productDescriptionLabel.attributedText = ProductAttributedStringHelper

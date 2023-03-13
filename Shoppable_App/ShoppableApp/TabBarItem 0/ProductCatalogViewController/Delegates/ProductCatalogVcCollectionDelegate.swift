@@ -41,7 +41,7 @@ extension ProductCatalogViewController: UICollectionViewDelegate, UICollectionVi
     
     // Add the name of the product
     cell.productNameLabel.attributedText = ProductAttributedStringHelper
-      .getAttributedName(from: currentProduct, withSize: 16)
+      .getAttributedName(from: currentProduct.name, withSize: 16)
     
     // Add the description of the product
     cell.productDescriptionLabel.attributedText = ProductAttributedStringHelper
@@ -54,7 +54,7 @@ extension ProductCatalogViewController: UICollectionViewDelegate, UICollectionVi
     /*
      Load the image of the product from a URL
      */
-    if let imageURL = ProductInfoHelper.canCreateImageUrl(from: currentProduct) {
+    if let imageURL = ProductInfoHelper.canCreateImageUrl(from: currentProduct.imageUrl) {
       
       // Attempt to load image
       let token = imageLoader?.loadImage(imageURL) { result in

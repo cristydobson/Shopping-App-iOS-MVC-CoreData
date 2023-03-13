@@ -7,7 +7,9 @@
     A TabBarController with 2 child Navigation Controllers
 */
 
+
 import UIKit
+import CoreData
 
 
 // Describes a product object's type
@@ -18,8 +20,8 @@ class TabBarController: UITabBarController {
 
   // MARK: - Properties
   
-  // UserDefaults
-  let itemsInShoppingCartArrayKey = "itemsInShoppingCartArray"
+  // Core Data
+  lazy var coreDataStack = CoreDataStack(modelName: "ShoppableApp")
   
   // Tab Bar
   var currentTabIndex = 0
@@ -31,8 +33,8 @@ class TabBarController: UITabBarController {
   var productCollections: [ProductCollection] = []
   
   // ShoppingCart
-  var itemsInShoppingCartIDs: [ProductDictionary] = []
-  var itemsInShoppingCartCount = 0
+  var shoppingCart: ShoppingCart!
+  var shoppingCartProducts: [ShoppingCartProduct] = []
   
   
   // MARK: - View Controller's Life Cycle
@@ -49,8 +51,8 @@ class TabBarController: UITabBarController {
     // Load JSON Data
     loadJsonData()
     
-    // Get the items in the Shopping Cart from UserDefaults
-    getItemsInShoppingCart()
+    // Core Data
+    loadShoppingCartFromCoreData()
     
     // Become the Children's delegate
     setupChildrenDelegates()
@@ -60,6 +62,7 @@ class TabBarController: UITabBarController {
     
     // Set up the Cart TabBar item badge
     setupInitialCartTabBarItemBadge()
+    
     
   }
 
@@ -97,10 +100,7 @@ extension TabBarController {
   
   // Cart's TabBarItem badge on app launch
   func setupInitialCartTabBarItemBadge() {
-    let itemsInCartCount = ShoppingCartProductHelper.getItemCountInShoppingCart(
-      from: itemsInShoppingCartIDs)
-    itemsInShoppingCartCount = itemsInCartCount
-    setupCartTabBarItemBadge(with: itemsInCartCount)
+    setupCartTabBarItemBadge(with: Int(shoppingCart.productCount))
   }
   
 }
@@ -140,8 +140,9 @@ extension TabBarController {
       let rootController = navController.topViewController as? CartViewController
     {
       rootController.cartViewControllerDelegate = self
-      rootController.itemsInShoppingCartIDs = itemsInShoppingCartIDs
-      rootController.productCollections = productCollections
+      rootController.coreDataStack = coreDataStack
+      rootController.shoppingCart = shoppingCart
+      rootController.shoppingCartProducts = shoppingCartProducts
       rootController.imageLoader = imageLoader
     }
   }
@@ -169,13 +170,94 @@ extension TabBarController {
     productCollections = products
   }
   
-  // Get itemsInShoppingCart array from UserDefaults if it exists
-  func getItemsInShoppingCart() {
-    if let itemsInShoppingCartArray = UserDefaults.standard.array(
-      forKey: itemsInShoppingCartArrayKey) as? [ProductDictionary]
-    {
-      itemsInShoppingCartIDs = itemsInShoppingCartArray
+}
+
+
+// MARK: - CoreData Methods
+
+extension TabBarController {
+  
+  // Fetch the Shopping Cart from CoreData
+  func loadShoppingCartFromCoreData() {
+
+    let cartName = "ShoppingCart"
+
+    let cartFetchRequest: NSFetchRequest<ShoppingCart> = ShoppingCart.fetchRequest()
+    cartFetchRequest.predicate = NSPredicate(
+      format: "%K == %@", #keyPath(ShoppingCart.name), cartName)
+
+    do {
+      let results = try coreDataStack.managedContext.fetch(cartFetchRequest)
+
+      if results.count > 0 {
+        shoppingCart = results.first!
+        shoppingCartProducts = shoppingCart.products?.allObjects as! [ShoppingCartProduct]
+      }
+      else {
+        shoppingCart = ShoppingCart(context: coreDataStack.managedContext)
+        shoppingCart.name = cartName
+        coreDataStack.saveContext()
+      }
+    }
+    catch let error as NSError {
+      print("Error fetching ShoppingCart: \(error), description: \(error.userInfo)!!")
     }
   }
   
+  // Save new products in CoreData's ShoppingCart
+  func saveToShoppingCartInCoreData(product: Product) {
+    
+    var isInShoppingCart = false
+    
+    /*
+     Find out if the product is already in the Shopping Cart
+     and update its count
+     */
+    for p in shoppingCartProducts {
+      
+      if p.id == product.id {
+        isInShoppingCart = true
+        p.count += 1
+        
+        break
+      }
+    }
+    
+    /*
+     If the product is not in the Shopping Cart,
+     then create a new one
+     */
+    if !isInShoppingCart {
+      let cartProduct = ShoppingCartProduct(context: coreDataStack.managedContext)
+      cartProduct.id = product.id
+      cartProduct.name = product.name
+      cartProduct.type = product.type
+      cartProduct.count = 1
+      cartProduct.price = product.price.value
+      cartProduct.imgUrl = product.imageUrl
+      
+      shoppingCart.addToProducts(cartProduct)
+      shoppingCartProducts.append(cartProduct)
+    }
+    
+    shoppingCart.productCount += 1
+    
+    coreDataStack.saveContext()
+  }
+  
+  // Update the ShoppingCart's total price in CoreData
+  func updateShoppingCartTotalInCoreData(with amount: Double) {
+    
+    let currentTotal = shoppingCart.totalAmount
+    
+    if currentTotal > 0 {
+      shoppingCart.totalAmount = currentTotal + amount
+    }
+    else {
+      shoppingCart.totalAmount = amount
+    }
+    
+    coreDataStack.saveContext()
+  }
+
 }

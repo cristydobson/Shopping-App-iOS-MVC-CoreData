@@ -23,7 +23,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
   // MARK: - Items in section
   // All products in the Shopping Cart in 1 section
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return itemsInShoppingCart.count
+    return shoppingCartProducts.count
   }
   
   
@@ -34,35 +34,34 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(
       withIdentifier: shoppingCartCellID,
       for: indexPath) as! CartProductCell
+    
     let index = indexPath.row
     
     // Become the cell's delegate
     cell.cartProductCellDelegate = self
     
     // Product to load in the current cell
-    let product = itemsInShoppingCart[index]
+    let product = shoppingCartProducts[index]
     
     // Add the name of the product
     cell.productNameLabel.attributedText = ProductAttributedStringHelper
-      .getAttributedName(from: product, withSize: 18)
-    
-    // Add the itemsInShoppingCart count
-    let productInShoppingCartDict = itemsInShoppingCartIDs[index]
-    let inShoppingCartCount = ShoppingCartProductInfoHelper
-      .getSingleProductCountInShoppingCart(from: productInShoppingCartDict)
+      .getAttributedName(from: product.name!, withSize: 18)
+
+    // Add the product count the ShoppingCart
+    let inShoppingCartCount = Int(product.count)
     
     cell.changeQuantityButton.text = "\(inShoppingCartCount)"
     cell.itemCountInShoppingCart = inShoppingCartCount
     
     // Add the price of the product
-    let price = product.price.value
+    let price = product.price
     let multipliedPriceValue = price.byItemCount(inShoppingCartCount)
     cell.productPriceLabel.text = multipliedPriceValue.toCurrencyFormat()
     
     /*
      Load the image of the product from a URL
      */
-    if let imageURL = ProductInfoHelper.canCreateImageUrl(from: product) {
+    if let imageURL = ProductInfoHelper.canCreateImageUrl(from: product.imgUrl) {
       
       // Attempt to load image
       let token = imageLoader?.loadImage(imageURL) { result in

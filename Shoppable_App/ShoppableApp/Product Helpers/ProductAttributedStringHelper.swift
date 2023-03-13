@@ -14,9 +14,7 @@ struct ProductAttributedStringHelper {
   
   // MARK: - Product Name
   
-  static func getAttributedName(from product: Product, withSize fontSize: CGFloat) -> NSAttributedString {
-    
-    let name = product.name.uppercased()
+  static func getAttributedName(from name: String, withSize fontSize: CGFloat) -> NSAttributedString {
     return name.toStyleString(with: fontSize, and: .bold)
   }
   

@@ -12,8 +12,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-    //Set the color for any NavigationBar in the app
-    UINavigationBar.appearance().tintColor = UIColor.dynamicColor(light: .black, dark: .white)
 
     return true
   }

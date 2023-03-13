@@ -29,7 +29,7 @@ extension TabBarController: UITabBarControllerDelegate {
       switch selectedTabIndex {
         case 1:
           if let currentController = viewController as? CartViewController {
-            currentController.itemsInShoppingCartIDs = itemsInShoppingCartIDs
+            currentController.shoppingCartProducts = shoppingCartProducts
           }
         default:
           print("Collections Tab")

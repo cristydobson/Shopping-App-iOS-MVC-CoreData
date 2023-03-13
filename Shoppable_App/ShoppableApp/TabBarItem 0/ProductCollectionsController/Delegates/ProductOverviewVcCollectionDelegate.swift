@@ -43,7 +43,7 @@ extension ProductOverviewViewController: UICollectionViewDelegate, UICollectionV
     // Load the image of the product type from a URL
     if
       let firstItem = productCollections[indexPath.row].products.first,
-      let productImageURL = ProductInfoHelper.canCreateImageUrl(from: firstItem)
+      let productImageURL = ProductInfoHelper.canCreateImageUrl(from: firstItem.imageUrl)
     {
       // Attempt to load image
       let token = imageLoader?.loadImage(productImageURL) { result in
