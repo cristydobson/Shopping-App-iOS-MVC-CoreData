@@ -1,8 +1,8 @@
 /*
  JsonLoader.swift
- ShoppableApp
+
  
- Created on 1/24/23.
+ Created by Cristina Dobson
  
  Load the data from the "products.json" file
  */

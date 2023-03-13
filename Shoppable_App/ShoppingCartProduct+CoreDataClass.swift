@@ -1,6 +1,6 @@
 //
 //  ShoppingCartProduct+CoreDataClass.swift
-//  ShoppableApp
+//  
 //
 //  Created by Cristina Dobson 
 //

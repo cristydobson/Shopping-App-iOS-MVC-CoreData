@@ -1,8 +1,8 @@
 //
 //  StringExtensions.swift
-//  ShoppableApp
 //
-//  Created on 2/2/23.
+//
+//  Created by Cristina Dobson
 //
 
 

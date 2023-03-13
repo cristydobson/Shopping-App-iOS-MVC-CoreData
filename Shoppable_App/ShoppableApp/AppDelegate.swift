@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  ShoppableApp
+//  
 //
-//  Created on 1/19/23.
+//  Created by Cristina Dobson
 //
 
 import UIKit

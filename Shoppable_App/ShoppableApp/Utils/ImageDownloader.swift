@@ -1,8 +1,8 @@
 /*
  ImageDownloader.swift
- ShoppableApp
  
- Created on 1/21/23.
+ 
+ Created by Cristina Dobson
  
  This class' whole function is to load an ImgaeUrl
  */

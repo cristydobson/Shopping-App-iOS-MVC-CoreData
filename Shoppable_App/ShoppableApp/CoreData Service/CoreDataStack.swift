@@ -14,13 +14,30 @@ class CoreDataStack {
   
   // MARK: - Properties
   
-  private let modelName = "ShoppableApp"
+  private static let modelName = "ShoppableApp"
   
-  private lazy var storeContainer: NSPersistentContainer = {
+  private static var managedObjectModel: NSManagedObjectModel = {
     
-    let container = NSPersistentContainer(name: modelName)
+    guard let bundleURL = Bundle.main.url(
+      forResource: CoreDataStack.modelName,
+      withExtension: "momd") else {
+      fatalError("Failed to locare momd file")
+    }
+    
+    guard let model = NSManagedObjectModel(contentsOf: bundleURL) else {
+      fatalError("Failed to load momd file")
+    }
+    
+    return model
+  }()
+  
+  private var storeContainer: NSPersistentContainer = {
+    
+    let container = NSPersistentContainer(
+      name: CoreDataStack.modelName,
+      managedObjectModel: CoreDataStack.managedObjectModel)
+    
     container.loadPersistentStores { _, error in
-      
       if let error = error as NSError? {
         print("Error: \(error), \(error.userInfo)")
       }
@@ -48,9 +65,5 @@ class CoreDataStack {
     }
   }
   
-  
-  func accessStoreContainerForTesting(_ container: NSPersistentContainer) {
-    storeContainer = container
-  }
   
 }

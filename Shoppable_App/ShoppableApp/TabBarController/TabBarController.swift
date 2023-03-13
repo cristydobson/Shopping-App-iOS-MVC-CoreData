@@ -1,8 +1,7 @@
 /*
     TabBarController.swift
-    ShoppableApp
 
-    Created on 1/19/23.
+    Created by Cristina Dobson
  
     A TabBarController with 2 child Navigation Controllers
 */

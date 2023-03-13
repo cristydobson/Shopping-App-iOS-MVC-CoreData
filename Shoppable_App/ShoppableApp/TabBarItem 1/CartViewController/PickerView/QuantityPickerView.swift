@@ -1,8 +1,8 @@
 //
 //  QuantityPickerView.swift
-//  ShoppableApp
 //
-//  Created on 2/5/23.
+//
+//  Created by Cristina Dobson
 //
 
 

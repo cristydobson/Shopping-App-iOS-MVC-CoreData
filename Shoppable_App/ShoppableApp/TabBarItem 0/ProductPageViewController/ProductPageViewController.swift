@@ -1,8 +1,8 @@
 /*
  ProductPageViewController.swift
- ShoppableApp
  
- Created on 1/19/23.
+ 
+ Created by Cristina Dobson
  
  Display the product the user tapped on
  in ProductCatalogViewController

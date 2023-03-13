@@ -1,8 +1,8 @@
 /*
  CheckmarkView.swift
- ShoppableApp
  
- Created on 1/24/23.
+ 
+ Created by Cristina Dobson
  
  Animate a Checkmark on the Add To Cart button in
  ProductPageViewController

@@ -1,8 +1,7 @@
 /*
  ProductOverviewViewController.swift
- ShoppableApp
  
- Created on 1/19/23.
+ Created by Cristina Dobson
  
  This ViewController shows the product collections by type
  */

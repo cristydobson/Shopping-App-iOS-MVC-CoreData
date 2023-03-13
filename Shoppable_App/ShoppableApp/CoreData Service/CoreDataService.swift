@@ -1,6 +1,6 @@
 //
 //  CoreDataHelper.swift
-//  ShoppableApp
+//  
 //
 //  Created by Cristina Dobson
 //

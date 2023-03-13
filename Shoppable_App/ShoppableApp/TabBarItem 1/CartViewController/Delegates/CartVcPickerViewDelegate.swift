@@ -1,8 +1,8 @@
 //
 //  CartVcPickerViewDelegate.swift
-//  ShoppableApp
 //
-//  Created on 2/10/23.
+//
+//  Created by Cristina Dobson
 //
 
 
@@ -112,10 +112,7 @@ extension CartViewController: QuantityPickerViewDelegate {
       cell.itemCountInShoppingCart = newQuantityValue
       cell.newPickerValue = 0
       
-      /*
-       Update the product count in itemsInShoppingCartIDs array
-       and UserDefaults
-       */
+      // Update the product count in CoreData
       updateProductInCartCount(for: index, with: newQuantityValue)
     }
   }

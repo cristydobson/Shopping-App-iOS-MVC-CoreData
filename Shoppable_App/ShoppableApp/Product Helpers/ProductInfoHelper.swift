@@ -1,8 +1,8 @@
 /*
  ProductInfoHelper.swift
- ShoppableApp
  
- Created on 1/23/23.
+ 
+ Created by Cristina Dobson
  
  Methods to get the product information from
  a Product object

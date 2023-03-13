@@ -1,8 +1,8 @@
 /*
  ProductCatalogViewController.swift
- ShoppableApp
  
- Created on 1/19/23.
+ 
+ Created by Cristina Dobson
  
  Display the product list of a single type in a CollectionView
  */

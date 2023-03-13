@@ -1,8 +1,8 @@
 /*
  CartProductCell.swift
- ShoppableApp
  
- Created on 1/19/23.
+ 
+ Created by Cristina Dobson
  
  This is the cell from CartViewController's tableView
  */

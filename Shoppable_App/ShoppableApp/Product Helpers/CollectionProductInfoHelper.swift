@@ -1,8 +1,8 @@
 //
 //  CollectionProductInfoHelper.swift
-//  ShoppableApp
 //
-//  Created on 2/8/23.
+//
+//  Created by Cristina Dobson
 //
 
 
