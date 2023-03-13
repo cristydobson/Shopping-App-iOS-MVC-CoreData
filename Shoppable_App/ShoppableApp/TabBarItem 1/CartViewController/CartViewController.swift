@@ -1,4 +1,4 @@
-/*
+ /*
  CartViewController.swift
  ShoppableApp
  
@@ -18,8 +18,7 @@ class CartViewController: UIViewController {
   // MARK: - Properties
   
   // Core Data
-  var coreDataStack: CoreDataStack!
-  var shoppingCart: ShoppingCart!
+  var coreDataService: CoreDataService!
   var shoppingCartProducts: [ShoppingCartProduct] = []
   
   // Delegate
@@ -130,8 +129,9 @@ extension CartViewController {
   }
   
   func setupTotalPriceLabel() {
-    // Get the total price from UserDefaults and display it
-    let totalPriceAmount = shoppingCart.totalAmount
+    // Get the total price from CoreData
+    let totalPriceAmount = coreDataService
+      .getShoppingCartTotalAmount()
     totalShoppingAmountLabel.text = totalPriceAmount.toCurrencyFormat()
   }
   
@@ -193,11 +193,12 @@ extension CartViewController {
     let product = shoppingCartProducts[index]
     let count = product.count
     
-    shoppingCart.productCount -= count
+    // Update Core Data
+    coreDataService.updateProductCount(by: -Int(count))
     
-    coreDataStack.managedContext.delete(product)
-    coreDataStack.saveContext()
+    coreDataService.deleteProduct(product)
     
+    // Update array
     shoppingCartProducts.remove(at: index)
   }
   
@@ -230,7 +231,7 @@ extension CartViewController {
 
     // Update the product's count on the ShoppingCart
     updateCountInShoppingCartProductInCoreData(newCount, on: index)
-    updateTotalShoppingCartProductCountInCoreData(with: delta)
+    coreDataService.updateProductCount(by: delta)
 
     // Update the total product price
     let productPrice = shoppingCartProducts[index].price
@@ -245,22 +246,17 @@ extension CartViewController {
     shoppingCartTableView.reloadData()
   }
   
-  func updateTotalShoppingCartProductCountInCoreData(with itemCount: Int) {
-    shoppingCart.productCount += Int64(itemCount)
-    coreDataStack.saveContext()
-  }
   
   // Update the product's count on the ShoppingCart Product
   func updateCountInShoppingCartProductInCoreData(_ newItemCount: Int, on index: Int) {
     let product = shoppingCartProducts[index]
-    product.count = Int64(newItemCount)
-    coreDataStack.saveContext()
+    coreDataService.updateCount(
+      for: product, with: newItemCount)
   }
   
   func updateTotalPriceInCoreData(with amount: Double, itemCount: Int) {
     let newAmount = amount.byItemCount(itemCount)
-    shoppingCart.totalAmount += newAmount
-    coreDataStack.saveContext()
+    coreDataService.updateTotalAmount(by: newAmount)
   }
   
 }

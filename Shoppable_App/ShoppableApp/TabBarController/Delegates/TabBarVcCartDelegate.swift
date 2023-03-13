@@ -15,7 +15,9 @@ extension TabBarController: CartViewControllerDelegate {
   
   func updateShoppingCartProducts(_ products: [ShoppingCartProduct]) {
     shoppingCartProducts = products
-    setupCartTabBarItemBadge(with: Int(shoppingCart.productCount))
+    
+    let count = coreDataService.getShoppingCartCount()
+    setupCartTabBarItemBadge(with: count)
   }
   
   
@@ -31,7 +33,8 @@ extension TabBarController: CartViewControllerDelegate {
   }
   
   func updateTabBarBadge() {
-    setupCartTabBarItemBadge(with: Int(shoppingCart.productCount))
+    let count = coreDataService.getShoppingCartCount()
+    setupCartTabBarItemBadge(with: count)
   }
 }
 

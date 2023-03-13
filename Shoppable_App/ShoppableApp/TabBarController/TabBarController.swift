@@ -21,7 +21,8 @@ class TabBarController: UITabBarController {
   // MARK: - Properties
   
   // Core Data
-  lazy var coreDataStack = CoreDataStack(modelName: "ShoppableApp")
+  lazy var coreDataStack = CoreDataStack()
+  var coreDataService: CoreDataService!
   
   // Tab Bar
   var currentTabIndex = 0
@@ -33,7 +34,6 @@ class TabBarController: UITabBarController {
   var productCollections: [ProductCollection] = []
   
   // ShoppingCart
-  var shoppingCart: ShoppingCart!
   var shoppingCartProducts: [ShoppingCartProduct] = []
   
   
@@ -52,6 +52,7 @@ class TabBarController: UITabBarController {
     loadJsonData()
     
     // Core Data
+    coreDataService = CoreDataService(coreDataStack: coreDataStack)
     loadShoppingCartFromCoreData()
     
     // Become the Children's delegate
@@ -100,7 +101,8 @@ extension TabBarController {
   
   // Cart's TabBarItem badge on app launch
   func setupInitialCartTabBarItemBadge() {
-    setupCartTabBarItemBadge(with: Int(shoppingCart.productCount))
+    let count = coreDataService.getShoppingCartCount()
+    setupCartTabBarItemBadge(with: count)
   }
   
 }
@@ -140,8 +142,7 @@ extension TabBarController {
       let rootController = navController.topViewController as? CartViewController
     {
       rootController.cartViewControllerDelegate = self
-      rootController.coreDataStack = coreDataStack
-      rootController.shoppingCart = shoppingCart
+      rootController.coreDataService = coreDataService
       rootController.shoppingCartProducts = shoppingCartProducts
       rootController.imageLoader = imageLoader
     }
@@ -179,85 +180,28 @@ extension TabBarController {
   
   // Fetch the Shopping Cart from CoreData
   func loadShoppingCartFromCoreData() {
-
-    let cartName = "ShoppingCart"
-
-    let cartFetchRequest: NSFetchRequest<ShoppingCart> = ShoppingCart.fetchRequest()
-    cartFetchRequest.predicate = NSPredicate(
-      format: "%K == %@", #keyPath(ShoppingCart.name), cartName)
-
-    do {
-      let results = try coreDataStack.managedContext.fetch(cartFetchRequest)
-
-      if results.count > 0 {
-        shoppingCart = results.first!
-        shoppingCartProducts = shoppingCart.products?.allObjects as! [ShoppingCartProduct]
-      }
-      else {
-        shoppingCart = ShoppingCart(context: coreDataStack.managedContext)
-        shoppingCart.name = cartName
-        coreDataStack.saveContext()
-      }
-    }
-    catch let error as NSError {
-      print("Error fetching ShoppingCart: \(error), description: \(error.userInfo)!!")
-    }
+    shoppingCartProducts = coreDataService.getProductArray()
   }
   
   // Save new products in CoreData's ShoppingCart
   func saveToShoppingCartInCoreData(product: Product) {
-    
-    var isInShoppingCart = false
-    
-    /*
-     Find out if the product is already in the Shopping Cart
-     and update its count
-     */
-    for p in shoppingCartProducts {
-      
-      if p.id == product.id {
-        isInShoppingCart = true
-        p.count += 1
-        
-        break
-      }
-    }
-    
-    /*
-     If the product is not in the Shopping Cart,
-     then create a new one
-     */
-    if !isInShoppingCart {
-      let cartProduct = ShoppingCartProduct(context: coreDataStack.managedContext)
-      cartProduct.id = product.id
-      cartProduct.name = product.name
-      cartProduct.type = product.type
-      cartProduct.count = 1
-      cartProduct.price = product.price.value
-      cartProduct.imgUrl = product.imageUrl
-      
-      shoppingCart.addToProducts(cartProduct)
-      shoppingCartProducts.append(cartProduct)
-    }
-    
-    shoppingCart.productCount += 1
-    
-    coreDataStack.saveContext()
-  }
-  
-  // Update the ShoppingCart's total price in CoreData
-  func updateShoppingCartTotalInCoreData(with amount: Double) {
-    
-    let currentTotal = shoppingCart.totalAmount
-    
-    if currentTotal > 0 {
-      shoppingCart.totalAmount = currentTotal + amount
+
+    if let newProduct = coreDataService.getProduct(product.id, from: shoppingCartProducts) {
+      // If the product is already in the Shopping Cart
+      coreDataService.updateCount(
+        for: newProduct, by: 1)
     }
     else {
-      shoppingCart.totalAmount = amount
+      // Create a new ShoppingCartProduct
+      let newProduct = coreDataService.saveNewProduct(product)
+      shoppingCartProducts.append(newProduct)
     }
     
-    coreDataStack.saveContext()
+    coreDataService.updateProductCount(by: 1)
+    
+    // Update the total price in Shopping Cart
+    let price = product.price.value
+    coreDataService.updateTotalAmount(by: price)
   }
 
 }

@@ -6,27 +6,37 @@
 //
 
 import XCTest
+import CoreData
 @testable import Shoppable
 
-final class CartViewControllerTests: XCTestCase {
+
+final class CoreDataServiceTests: XCTestCase {
 
   
-  var sut: CartViewController!
+  var sut: CoreDataService!
+  var coreDataStack: CoreDataStack!
   
   
   override func setUpWithError() throws {
     try super.setUpWithError()
-
-    sut = CartViewController()
-
+    
+    coreDataStack = TestCoreData()
+    sut = CoreDataService(coreDataStack: coreDataStack)
   }
   
   override func tearDownWithError() throws {
     sut = nil
+    coreDataStack = nil
     
     try super.tearDownWithError()
   }
+  
+  
+  // MARK: - Test Save Methods
 
+ 
+  
+ 
   
 }
 

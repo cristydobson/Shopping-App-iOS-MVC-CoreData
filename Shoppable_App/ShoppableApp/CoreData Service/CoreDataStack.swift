@@ -14,11 +14,11 @@ class CoreDataStack {
   
   // MARK: - Properties
   
-  private let modelName: String
+  private let modelName = "ShoppableApp"
   
   private lazy var storeContainer: NSPersistentContainer = {
     
-    let container = NSPersistentContainer(name: self.modelName)
+    let container = NSPersistentContainer(name: modelName)
     container.loadPersistentStores { _, error in
       
       if let error = error as NSError? {
@@ -29,15 +29,13 @@ class CoreDataStack {
   }()
   
   lazy var managedContext: NSManagedObjectContext = {
-    return self.storeContainer.viewContext
+    return storeContainer.viewContext
   }()
   
   
   // MARK: - Methods
   
-  init(modelName: String) {
-    self.modelName = modelName
-  }
+  init() {}
   
   func saveContext() {
     guard managedContext.hasChanges else { return }
@@ -48,6 +46,11 @@ class CoreDataStack {
     catch let error as NSError {
       print("Error: \(error), \(error.userInfo)")
     }
+  }
+  
+  
+  func accessStoreContainerForTesting(_ container: NSPersistentContainer) {
+    storeContainer = container
   }
   
 }
