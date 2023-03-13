@@ -1,4 +1,4 @@
-# (Swift 5, iOS 16): MVC, Notification Center, UIKit & XCTest
+# (Swift 5, iOS 16): MVC, Core Data, UIKit & XCTest
 
 <br>
 
@@ -27,7 +27,7 @@ This app contains:
 * This View Controller has 2 child UINavigationControllers which produce 2 TabBarItems.
 * Delegate for ProductOverviewViewController and CartViewController.
 * It handles getting the product objects from the JSON file to be used through out the app.
-* It handles Shopping Cart data storage in UserDefaults.
+* It handles Shopping Cart data storage in CoreData.
 
 <br>
 
