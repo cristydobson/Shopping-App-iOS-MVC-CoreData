@@ -45,7 +45,7 @@ final class CoreDataServiceTests: XCTestCase {
   }
   
   
-  // MARK: - Test Save Methods
+  // MARK: - Test Save New Product
 
   func testSaveNewProduct_whenProductObjectGiven() {
     // given
@@ -80,11 +80,124 @@ final class CoreDataServiceTests: XCTestCase {
     // when
     coreDataStack.managedContext.perform {
       let newProduct = self.sut.saveNewProduct(product)
+      
+      // then
       XCTAssertNotNil(newProduct)
     }
     
     waitForExpectations(timeout: 2.0) { error in
       XCTAssertNil(error, "Did not save new product!!")
+    }
+  }
+  
+  
+  // MARK: - Test Update Single Product Count
+  
+  func testContextIsSavedAfterUpdateCountForProduct_withPositiveNumber() {
+    // given
+    let product = getProduct()
+    let newProduct = sut.saveNewProduct(product)
+    let expectedCount = 2
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      self.sut.updateCount(for: newProduct, with: 2)
+      
+      // then
+      XCTAssertEqual(Int(newProduct.count), expectedCount)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not save new count for product!!")
+    }
+  }
+  
+  func testContextIsSavedAfterUpdateCountForProduct_byPositiveNumber() {
+    // given
+    let product = getProduct()
+    // Start count is 1
+    let newProduct = sut.saveNewProduct(product)
+    let expectedCount = 3
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      self.sut.updateCount(for: newProduct, by: 2)
+      
+      // then
+      XCTAssertEqual(Int(newProduct.count), expectedCount)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not save new count for product by positive number!!")
+    }
+  }
+  
+  func testContextIsSavedAfterUpdateCountForProduct_byNegativeNumber() {
+    // given
+    let product = getProduct()
+    // Start count is 1
+    let newProduct = sut.saveNewProduct(product)
+    let expectedCount = 1
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      /*
+       If the product's count is n,
+       then it can't subtract n in CartController
+       ChangeQuantity pickerView.
+       For the test, first increment 1 to 2.
+       Then test update by a negative number.
+       */
+      self.sut.updateCount(for: newProduct, by: 1)
+      self.sut.updateCount(for: newProduct, by: -1)
+      
+      // then
+      XCTAssertEqual(Int(newProduct.count), expectedCount)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not save new count for product by negative number!!")
+    }
+  }
+  
+  
+  // MARK: - Test Delete Product
+  
+  func testContextIsSavedAfterDeletingProduct() {
+    // given
+    let product = getProduct()
+    let newProduct = sut.saveNewProduct(product)
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      self.sut.deleteProduct(newProduct)
+      
+      // then
+      XCTAssertNil(newProduct.shoppingCart)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not save delete product!!")
     }
   }
  
