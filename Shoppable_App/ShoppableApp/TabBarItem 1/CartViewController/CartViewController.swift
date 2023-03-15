@@ -194,7 +194,7 @@ extension CartViewController {
     let count = product.count
     
     // Update Core Data
-    coreDataService.updateProductCount(by: -Int(count))
+    coreDataService.updateShoppingCartProductCount(by: -Int(count))
     
     coreDataService.deleteProduct(product)
     
@@ -231,7 +231,7 @@ extension CartViewController {
 
     // Update the product's count on the ShoppingCart
     updateCountInShoppingCartProductInCoreData(newCount, on: index)
-    coreDataService.updateProductCount(by: delta)
+    coreDataService.updateShoppingCartProductCount(by: delta)
 
     // Update the total product price
     let productPrice = shoppingCartProducts[index].price
@@ -256,7 +256,7 @@ extension CartViewController {
   
   func updateTotalPriceInCoreData(with amount: Double, itemCount: Int) {
     let newAmount = amount.byItemCount(itemCount)
-    coreDataService.updateTotalAmount(by: newAmount)
+    coreDataService.updateShoppingCartTotalAmount(by: newAmount)
   }
   
 }

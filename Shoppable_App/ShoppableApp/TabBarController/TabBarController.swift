@@ -196,11 +196,11 @@ extension TabBarController {
       shoppingCartProducts.append(newProduct)
     }
     
-    coreDataService.updateProductCount(by: 1)
+    coreDataService.updateShoppingCartProductCount(by: 1)
     
     // Update the total price in Shopping Cart
     let price = product.price.value
-    coreDataService.updateTotalAmount(by: price)
+    coreDataService.updateShoppingCartTotalAmount(by: price)
   }
 
 }

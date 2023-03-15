@@ -27,7 +27,7 @@ final class CoreDataService {
   }
   
   func loadShoppingCart() {
-    shoppingCart = getShoppingCart()
+    shoppingCart = getShoppingCart("ShoppingCart")
   }
   
 }
@@ -37,13 +37,11 @@ final class CoreDataService {
 
 extension CoreDataService {
   
-  func getShoppingCart() -> ShoppingCart? {
-    
-    let cartName = "ShoppingCart"
+  func getShoppingCart(_ name: String) -> ShoppingCart? {
     
     let cartFetchRequest: NSFetchRequest<ShoppingCart> = ShoppingCart.fetchRequest()
     cartFetchRequest.predicate = NSPredicate(
-      format: "name == %@", cartName)
+      format: "name == %@", name)
     
     do {
       let results = try coreDataStack.managedContext.fetch(cartFetchRequest)
@@ -55,7 +53,7 @@ extension CoreDataService {
       }
       else {
         shoppingCart = ShoppingCart(context: coreDataStack.managedContext)
-        shoppingCart.name = cartName
+        shoppingCart.name = name
         coreDataStack.saveContext()
       }
       return shoppingCart
@@ -132,12 +130,12 @@ extension CoreDataService {
   
   // MARK: - ShoppingCart
   
-  func updateTotalAmount(by amount: Double) {
+  func updateShoppingCartTotalAmount(by amount: Double) {
     shoppingCart.totalAmount += amount
     coreDataStack.saveContext()
   }
   
-  func updateProductCount(by count: Int) {
+  func updateShoppingCartProductCount(by count: Int) {
     shoppingCart.productCount += Int64(count)
     coreDataStack.saveContext()
   }

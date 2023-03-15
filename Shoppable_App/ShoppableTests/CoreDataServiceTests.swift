@@ -200,7 +200,128 @@ final class CoreDataServiceTests: XCTestCase {
       XCTAssertNil(error, "Did not save delete product!!")
     }
   }
- 
   
+  
+  // MARK: - Test Create New Shopping Cart
+  func testContextIsSavedAfterGetShoppingCart_whenShoppingCartDoesNotExist_thenCreateNewOne() {
+    // given
+    let newCartName = "TestShoppingCart"
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      let newShoppingCart = self.sut.getShoppingCart(newCartName)
+      
+      // then
+      XCTAssertNotNil(newShoppingCart)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not save new Shopping Cart!!")
+    }
+  }
+  
+  
+  // MARK: - Test Update Shopping Cart
+  
+  func testContextIsSavedAfterUpdateTotalAmount_inShoppingCart_byPositiveDouble() {
+    // given
+    let shoppingCart = sut.shoppingCart
+    let expectedTotalAmount = 100.0
+
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+
+    // when
+    coreDataStack.managedContext.perform {
+      self.sut.updateShoppingCartTotalAmount(by: 100.0)
+
+      // then
+      XCTAssertEqual(shoppingCart!.totalAmount, expectedTotalAmount)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not update Shopping Cart's total amount!!")
+    }
+  }
+  
+  func testContextIsSavedAfterUpdateTotalAmount_inShoppingCart_byNegativeDouble() {
+    // given
+    let shoppingCart = sut.shoppingCart
+    let expectedTotalAmount = 80.0
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      self.sut.updateShoppingCartTotalAmount(by: 100.0)
+      self.sut.updateShoppingCartTotalAmount(by: -20.0)
+      
+      // then
+      XCTAssertEqual(shoppingCart!.totalAmount, expectedTotalAmount)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not update Shopping Cart's total amount by a negative number!!")
+    }
+  }
+  
+  func testContextIsSavedAfterUpdateProductCount_inShoppingCart_byPositiveNumber() {
+    // given
+    let shoppingCart = sut.shoppingCart
+    let expectedCount = 5
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      self.sut.updateShoppingCartProductCount(by: 5)
+      
+      // then
+      XCTAssertEqual(Int(shoppingCart!.productCount), expectedCount)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not update Shopping Cart's product count!!")
+    }
+  }
+  
+  func testContextIsSavedAfterUpdateProductCount_inShoppingCart_byNegativeNumber() {
+    // given
+    let shoppingCart = sut.shoppingCart
+    let expectedCount = 2
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      self.sut.updateShoppingCartProductCount(by: 5)
+      self.sut.updateShoppingCartProductCount(by: -3)
+      
+      // then
+      XCTAssertEqual(Int(shoppingCart!.productCount), expectedCount)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not update Shopping Cart's product count by a negative number!!")
+    }
+  }
+  
+
 }
 
