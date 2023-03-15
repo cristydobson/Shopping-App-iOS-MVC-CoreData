@@ -20,7 +20,7 @@ final class CoreDataServiceTests: XCTestCase {
   override func setUpWithError() throws {
     try super.setUpWithError()
     
-    coreDataStack = CoreDataStack()
+    coreDataStack = TestCoreData()
     sut = CoreDataService(coreDataStack: coreDataStack)
   }
   
@@ -67,6 +67,26 @@ final class CoreDataServiceTests: XCTestCase {
     
   }
   
+  func testContextIsSavedAfterAddingNewProduct() {
+    
+    // given
+    let product = getProduct()
+    
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: coreDataStack.managedContext) { _ in
+      return true
+    }
+    
+    // when
+    coreDataStack.managedContext.perform {
+      let newProduct = self.sut.saveNewProduct(product)
+      XCTAssertNotNil(newProduct)
+    }
+    
+    waitForExpectations(timeout: 2.0) { error in
+      XCTAssertNil(error, "Did not save new product!!")
+    }
+  }
  
   
 }

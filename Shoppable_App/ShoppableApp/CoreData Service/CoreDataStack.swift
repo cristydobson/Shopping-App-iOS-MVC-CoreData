@@ -14,14 +14,14 @@ class CoreDataStack {
   
   // MARK: - Properties
   
-  private static let modelName = "ShoppableApp"
+  static let modelName = "ShoppableApp"
   
-  private static var managedObjectModel: NSManagedObjectModel = {
+  static var managedObjectModel: NSManagedObjectModel = {
     
     guard let bundleURL = Bundle.main.url(
       forResource: CoreDataStack.modelName,
       withExtension: "momd") else {
-      fatalError("Failed to locare momd file")
+      fatalError("Failed to locate momd file")
     }
     
     guard let model = NSManagedObjectModel(contentsOf: bundleURL) else {
@@ -31,7 +31,7 @@ class CoreDataStack {
     return model
   }()
   
-  private var storeContainer: NSPersistentContainer = {
+  var storeContainer: NSPersistentContainer = {
     
     let container = NSPersistentContainer(
       name: CoreDataStack.modelName,
@@ -64,6 +64,6 @@ class CoreDataStack {
       print("Error: \(error), \(error.userInfo)")
     }
   }
-  
+ 
   
 }

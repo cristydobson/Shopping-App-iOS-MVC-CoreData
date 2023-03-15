@@ -10,6 +10,7 @@
 		5E2D0BF82993DC8C00DCB967 /* CoreDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2D0BF72993DC8C00DCB967 /* CoreDataServiceTests.swift */; };
 		5E2D0BFB2994021900DCB967 /* ProductAttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2D0BFA2994021900DCB967 /* ProductAttributedStringHelper.swift */; };
 		5E2D0BFD299402E200DCB967 /* CollectionProductInfoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2D0BFC299402E200DCB967 /* CollectionProductInfoHelper.swift */; };
+		5E32518629C1B9DA00F1EB43 /* TestCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E32518529C1B9DA00F1EB43 /* TestCoreData.swift */; };
 		5E3ACD8E299647A6009D45C6 /* CartVcPickerViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3ACD8D299647A6009D45C6 /* CartVcPickerViewDelegate.swift */; };
 		5E3ACD9029964824009D45C6 /* CartVcCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3ACD8F29964824009D45C6 /* CartVcCellDelegate.swift */; };
 		5E3ACD922996488C009D45C6 /* CartVcTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3ACD912996488C009D45C6 /* CartVcTableViewDelegate.swift */; };
@@ -88,6 +89,7 @@
 		5E2D0BF72993DC8C00DCB967 /* CoreDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataServiceTests.swift; sourceTree = "<group>"; };
 		5E2D0BFA2994021900DCB967 /* ProductAttributedStringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductAttributedStringHelper.swift; sourceTree = "<group>"; };
 		5E2D0BFC299402E200DCB967 /* CollectionProductInfoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionProductInfoHelper.swift; sourceTree = "<group>"; };
+		5E32518529C1B9DA00F1EB43 /* TestCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreData.swift; sourceTree = "<group>"; };
 		5E3ACD8D299647A6009D45C6 /* CartVcPickerViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVcPickerViewDelegate.swift; sourceTree = "<group>"; };
 		5E3ACD8F29964824009D45C6 /* CartVcCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVcCellDelegate.swift; sourceTree = "<group>"; };
 		5E3ACD912996488C009D45C6 /* CartVcTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVcTableViewDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 		5E2D0BEF2993DC4F00DCB967 /* ShoppableTests */ = {
 			isa = PBXGroup;
 			children = (
+				5E32518529C1B9DA00F1EB43 /* TestCoreData.swift */,
 				5E2D0BF72993DC8C00DCB967 /* CoreDataServiceTests.swift */,
 			);
 			path = ShoppableTests;
@@ -627,6 +630,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E32518629C1B9DA00F1EB43 /* TestCoreData.swift in Sources */,
 				5E2D0BF82993DC8C00DCB967 /* CoreDataServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
